@@ -1,5 +1,9 @@
-import { createStore } from 'redux'
+import { createStore, combineReducers } from 'redux'
+import middleware from '../middleware'
 
-const store = createStore(() => {})
+const store = createStore(
+  combineReducers({}),
+  middleware
+);
 
 export default store;
