@@ -9,8 +9,6 @@ import * as TodoActions from '../actions/todo'
 const Todos = ({ todos, addTodo}) => (
   // <div>teste</div>
   <div>
-      {console.log('todos: ', todos)}
-      {console.log('addTodo: ', addTodo)}
    <ul>
       { todos.map(todo => (
         <li key={todo.id}>{todo.text}</li>

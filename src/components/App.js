@@ -1,19 +1,35 @@
 import React, { Component } from 'react';
-import { Provider } from 'react-redux';
-import store from '../store';
-
-import Todos from './Todos'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as postsActions from '../actions/posts'
+import PostsList from './PostsList'
 
 class App extends Component {
+
+  componentDidMount(){
+    this.props.requestPostsList()
+  }
+
   render() {
+    // const { posts } = this.props
+    // console.log('posts: ', posts)
     return (
-      <Provider store={store}>
-        <div>
-          <Todos />
-        </div>
-      </Provider>
+      <div>
+        <PostsList />
+      </div>
     );
   }
 }
 
-export default App
+function mapStateToProps(store) {
+  return{
+    posts : store.posts,
+    // loading : store.data.loading
+  }
+}
+
+const mapDispatchToProps = dispatch =>{
+  return bindActionCreators(postsActions, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
