@@ -1,5 +1,7 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React from 'react';
+import { connect } from 'react-redux';
+import { formatDate } from '../utils/helpers';
+import Rating from './Rating';
 
 const Post = ({post}) => {
   return (
@@ -13,7 +15,7 @@ const Post = ({post}) => {
       <p>
         autor: {post.author}
       </p>
-      <p>/
+      <p>
         texto: {post.body}
       </p>
       <p>
@@ -22,11 +24,9 @@ const Post = ({post}) => {
       <p>
         qtd. Comentários: {post.commentCount}
       </p>
+        <Rating score={post.voteScore}/>
       <p>
-        Score: {post.voteScore}
-      </p>
-      <p>
-        timestamp: {post.timestamp}
+        timestamp: {formatDate(post.timestamp)}
       </p>
     </div>
   )
@@ -34,7 +34,6 @@ const Post = ({post}) => {
 
 const mapStateToProps = (store, {id} ) => {
   const post = store.posts.posts[id];
-  console.log(post)
   return {
     post
   }

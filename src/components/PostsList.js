@@ -1,31 +1,30 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Post from './Post';
 
 
 class PostsList extends Component {
 
   render(){
-
-    const { posts, loading } = this.props
-    console.log('posts: ', posts)
-
+    const { postIds } = this.props
     return(
       <div>
         <ul>
-            { loading ? 'Loading...'
-              : posts.map(posts => (
-''
-            )) }
-          </ul>
+          { postIds.map((id) => (
+            <li key={id}>
+              <Post id={id} />
+            </li>
+          ))}
+        </ul>
       </div>
     )
   }
 }
 
-const mapStateToProps = store => {
+const mapStateToProps = (store) => {
+  const {posts} = store.posts
   return {
-    posts : store.posts.posts,
-    loading : store.posts.loading,
+    postIds : Object.keys(posts).map(id => id)
   }
 }
 

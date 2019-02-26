@@ -6,7 +6,8 @@ import { bindActionCreators } from 'redux';
 import * as postsActions from '../actions/posts';
 import * as authedUser from '../actions/authedUser';
 //components
-import Post from './Post';
+import PostsList from './PostsList';
+import Loading from '../utils/Loading'
 
 class App extends Component {
 
@@ -17,20 +18,17 @@ class App extends Component {
   }
 
   render() {
-    const { postIds, loading } = this.props
     return (
       <Router>
         <Fragment>
           <div>
-            {loading}
+            { this.props.loading === true
+              ? <Loading />
+              : <div>
+                <Route patth='/' exact component={PostsList} />
+              </div>
+            }
           </div>
-          <ul>
-            { postIds.map((id) => (
-              <li key={id}>
-                <Post id={id} />
-              </li>
-            ))}
-          </ul>
         </Fragment>
       </Router>
     );
@@ -38,12 +36,10 @@ class App extends Component {
 }
 
 function mapStateToProps(store) {
-  console.log('store: ', store)
-  const { posts, loading } = store.posts
-
-  return{
-    postIds : Object.keys(posts).map(id => id),
-    loading,
+  const { loading } = store.posts
+  return {
+    postslista : store.posts.posts,
+    loading
   }
 }
 
