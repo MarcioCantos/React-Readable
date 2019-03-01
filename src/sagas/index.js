@@ -1,5 +1,5 @@
-import * as PostsAPI from '../apis/PostsAPI'
-import { takeEvery, put, call, select } from 'redux-saga/effects';
+import * as PostsAPI from '../utils/apis/PostsAPI'
+import { takeEvery, put, call, delay } from 'redux-saga/effects';
 
 export default function* root(){
    yield takeEvery('REQUEST_POSTS', requestAllPosts);
@@ -7,6 +7,8 @@ export default function* root(){
 
 function* requestAllPosts() {
   try {
+    yield delay(2000);
+
     const response = yield call(PostsAPI.getAll)
     //use post.id as index of the array
     const posts = response.reduce((all, post) => {
@@ -19,4 +21,5 @@ function* requestAllPosts() {
   } catch (err) {
     yield put({ type: 'FAILURE_POSTS' });
   }
+
 }

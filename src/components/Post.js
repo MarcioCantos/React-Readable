@@ -7,6 +7,9 @@ const Post = ({post}) => {
   return (
     <div>
       <p>
+        título: <b>{post.id}</b>
+      </p>
+      <p>
         título: {post.title}
       </p>
       <p>

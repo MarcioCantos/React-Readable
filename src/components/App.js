@@ -7,7 +7,8 @@ import * as postsActions from '../actions/posts';
 import * as authedUser from '../actions/authedUser';
 //components
 import PostsList from './PostsList';
-import Loading from '../utils/Loading'
+import NewPost from './NewPost';
+import Nav from './Nav';
 
 class App extends Component {
 
@@ -22,10 +23,12 @@ class App extends Component {
       <Router>
         <Fragment>
           <div>
+            <Nav categories={this.props.categories}/>
             { this.props.loading === true
-              ? <Loading />
+              ? 'loading...'
               : <div>
-                <Route patth='/' exact component={PostsList} />
+              <Route path='/' exact component={PostsList} />
+              <Route path='/new' component={NewPost} />
               </div>
             }
           </div>
@@ -36,10 +39,10 @@ class App extends Component {
 }
 
 function mapStateToProps(store) {
-  const { loading } = store.posts
+  const { posts, loading } = store.posts
   return {
-    postslista : store.posts.posts,
-    loading
+    loading,
+    categories : Object.values(posts).map(cat => cat.category),
   }
 }
 

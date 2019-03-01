@@ -1,10 +1,10 @@
 import React from 'react';
-import loading from '../assets/imgs/loading.svg'
+import { ReactComponent as loading } from './imgs/loading.svg'
 
 const Loading = () => {
   return (
     <div>
-      {loading}
+      <loading/>
     </div>
   )
 }

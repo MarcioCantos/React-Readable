@@ -2,6 +2,7 @@ import {
   REQUEST_POSTS,
   SUCCESS_POSTS,
   FAILURE_POSTS,
+  SORT_POST_BY,
 } from '../actions/types'
 
 const INITIAL_STATE = {
@@ -22,6 +23,9 @@ export default function requestPosts(state = INITIAL_STATE, action) {
 
     case FAILURE_POSTS :
         return {data: [], loading: false, error: true};
+
+    case SORT_POST_BY :
+        return state;
 
     default :
     return state;
