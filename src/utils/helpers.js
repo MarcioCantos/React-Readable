@@ -8,7 +8,7 @@
  */
 export function formatDate(timestamp){
   const d = new Date(timestamp)
-  const time = d.toLocaleDateString()
+  const time = d.toLocaleDateString('pt-BR')
   // return time.substr(0, 5) + '/' + time.slice(-2) + ' | ' + d.toLocaleDateString()
   return  time.substr(0, 5) + '/' + time.slice(-2)
 }
@@ -41,5 +41,5 @@ export function sortList(key, order) {
 
     return order ? comparison : (comparison * -1);
   
-  };
+  };  
 }

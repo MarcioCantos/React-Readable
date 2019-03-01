@@ -8,10 +8,27 @@ import Post from './Post';
 
 
 class PostsList extends Component {
+  state = {
+    lastColumn : '',
+  }
 
   render(){
-    const { postIds } = this.props
-    console.log('postsSorting: ', this.props)
+
+    const { postIds, order, sortList } = this.props;
+    
+    const toggleOrder = (column) => {
+      let sort;
+
+      if(this.state.lastColumn === column) {
+        sort = !order
+      } else {
+        this.setState({lastColumn : column});
+        sort = true
+      }
+      console.log('lastColumn: ', this.state.lastColumn)      
+      return sortList.sortPost(column, sort)
+    }    
+
     return(
       <div>        
         <ul>
@@ -21,43 +38,41 @@ class PostsList extends Component {
             </li>
           ))}
         </ul>
-        {/* <button onClick={sortPost('title', true)}>Order by Title</button>
-        <button onClick={sortPost('timestamp', true)}>Order by Title</button>
-        <button onClick={sortPost('timestamp', true)}>Order by Title</button> */}
+        <button onClick={() => toggleOrder('title')}>Order by Title</button>
+        <button onClick={() => toggleOrder('timestamp')}>Order by Date</button>
+        <button onClick={() => toggleOrder('voteScore')}>Order by Vote Score</button>
+        <button onClick={() => toggleOrder('commentCount')}>Order by Comment Count</button>
       </div>
     )
   }
 }
 
 const sortingList = createSelector(
-  state => state.sorting,
-  sorting => {
-    const {posts} = this.props;
-    return Object.values(posts).sort(sortList(sorting.column, sorting.order))
+  state => state.posts,
+  state => state.column,
+  state => state.order,
+  state => state,
+  (posts, column, order, teste) => {
+    console.log('selector: ', order)
+    const sortingList = Object.values(posts).sort(sortList(column, order));
+    return sortingList.map(post => post.id);
   }
 );
 
 const mapStateToProps = (store) => {
-  const {posts, column, order} = store.posts
-  console.log('teste coluna e order: ', column)
-
-  console.log('teste2 ', Object.values(posts).sort(sortList('timestamp', true)))
-
+  const {posts, column, order } = store.posts
+  const initialList = Object.keys(posts).map(id => id);
   return {
     posts,
-    sorting : {column, order},
-    postIds : Object.keys(posts).map(id => id),
+    order,
+    postIds : column === undefined ? initialList : sortingList(store.posts),
   }
-}
+};
 
+const mapDispatchToProps = dispatch => {
+  return {
+    sortList : bindActionCreators(postsActions, dispatch)
+  }
+};
 
-export default connect(mapStateToProps)(PostsList)
-
-
-// const tag = posts => t => contents => posts.sort((a,b)=> posts[a].category > posts[b].category);
-
-// `<${t}>${contents}</${t}>`
-// tag('b')('this is bold!') 
-// > <b>this is bold!</b>
-
-// (a,b) => tweets[b].timestamp - tweets[a].timestamp)
+export default connect(mapStateToProps, mapDispatchToProps)(PostsList)

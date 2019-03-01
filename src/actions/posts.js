@@ -9,7 +9,7 @@ export function requestPostsList(){
   }
 }
 
-export function sortPost(param, order){
+export function sortPost(param, order){  
   return {
     type : SORT_POST_BY,
     column : param,

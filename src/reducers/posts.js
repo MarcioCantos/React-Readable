@@ -9,6 +9,7 @@ const INITIAL_STATE = {
   posts: [],
   loading : false,
   error : false,
+  order : false,
 }
 
 export default function requestPosts(state = INITIAL_STATE, action) {
@@ -19,13 +20,13 @@ export default function requestPosts(state = INITIAL_STATE, action) {
 
     case SUCCESS_POSTS :
       return {
-        posts: action.posts, loading: false, error: false};
+        posts: action.posts, order : false, loading: false, error: false};
 
     case FAILURE_POSTS :
         return {data: [], loading: false, error: true};
 
     case SORT_POST_BY :
-        return state;
+        return {...state, column : action.column, order : action.order}
 
     default :
     return state;
