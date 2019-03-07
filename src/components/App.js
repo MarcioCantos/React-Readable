@@ -2,11 +2,12 @@ import React, { Component, Fragment } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import LoadingBar from 'react-redux-loading';
 //actions creators
 import * as postsActions from '../actions/posts';
 import * as authedUser from '../actions/authedUser';
 //components
-import PostsList from './PostsList';
+import Dashboard from './Dashboard';
 import NewPost from './NewPost';
 import Nav from './Nav';
 
@@ -22,12 +23,13 @@ class App extends Component {
     return (
       <Router>
         <Fragment>
+          <LoadingBar />
           <div>
             <Nav categories={this.props.categories}/>
             { this.props.loading === true
               ? 'loading...'
               : <div>
-              <Route path='/' exact component={PostsList} />
+              <Route path='/' exact component={Dashboard} />
               <Route path='/new' component={NewPost} />
               </div>
             }

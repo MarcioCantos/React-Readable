@@ -1,6 +1,6 @@
 /**
  * Converte o 'timestamp' recebido para o formato brasileiro de data dd/mm/yy
- * Souce: code extracted from Udacity course, "Clone Tweet"
+ * Source: code extracted from Udacity course, "Clone Tweet"
  *
  * @export
  * @param {any} timestamp
@@ -19,7 +19,7 @@ export function formatDate(timestamp){
  * Se order = true -> ordena asc
  * Se order = false -> ordena desc
  * 
- * Souce: código baseado de Olayinka Omole
+ * Source: código base de Olayinka Omole
  * (https://www.sitepoint.com/sort-an-array-of-objects-in-javascript/)
  * 
  * @param {any} key 

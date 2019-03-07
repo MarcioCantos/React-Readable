@@ -2,35 +2,39 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { formatDate } from '../utils/helpers';
 import Rating from './Rating';
+import CommentsList from './CommentsList';
 
 const Post = ({post}) => {
   return (
     <div>
-      <p>
-        título: <b>{post.id}</b>
-      </p>
-      <p>
-        título: {post.title}
-      </p>
-      <p>
-        autor: {post.author}
-      </p>
-      <p>
-        autor: {post.author}
-      </p>
-      <p>
-        texto: {post.body}
-      </p>
-      <p>
-        categoria: {post.category}
-      </p>
-      <p>
-        qtd. Comentários: {post.commentCount}
-      </p>
-        <Rating score={post.voteScore}/>
-      <p>
-        timestamp: {formatDate(post.timestamp)}
-      </p>
+      <div>
+        <p>
+          título: <b>{post.id}</b>
+        </p>
+        <p>
+          título: {post.title}
+        </p>
+        <p>
+          autor: {post.author}
+        </p>
+        <p>
+          autor: {post.author}
+        </p>
+        <p>
+          texto: {post.body}
+        </p>
+        <p>
+          categoria: {post.category}
+        </p>
+        <p>
+          qtd. Comentários: {post.commentCount}
+        </p>
+          <Rating score={post.voteScore}/>
+        <p>
+          timestamp: {formatDate(post.timestamp)}
+        </p>
+      </div>
+      <CommentsList />
     </div>
   )
 }

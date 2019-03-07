@@ -1,19 +1,46 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, {useState} from 'react';
 
-const propTypes = {};
+function NewPost(){    
 
-const defaultProps = {};
+    const [text, setText] = useState('');
 
-export default class NewPost extends React.Component {
-    render() {
-        return (
-            <React.Fragment>
-                'New Post'
-            </React.Fragment>
-        );
+    const handleChange = (e) => {
+        const text = e.target.value;
+        setText(text)
+        console.log("Typing....   ", text)
     }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log('New Post: ', text);
+        setText('');
+    }
+
+    /**
+     * todo: Redirect to / if submited
+     */
+
+    return (
+        <div>
+            <h3>Compose New Post</h3>
+            <form onSubmit={handleSubmit}>
+                <textarea 
+                    placeholder="What'shapping?"
+                    value={text}
+                    onChange={handleChange}
+                    className='textarea'
+                    maxLength={280}
+                />
+                <button
+                    className='btn'
+                    type='submit'
+                    disabled={text === ''}>
+                        Submit
+                </button>
+            </form>
+        </div>
+    );
+
 }
 
- NewPost.propTypes = propTypes;
- NewPost.defaultProps = defaultProps;
+export default NewPost;

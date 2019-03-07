@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as postsActions from '../actions/posts';
@@ -7,25 +7,17 @@ import { sortList } from '../utils/helpers'
 import Post from './Post';
 
 
-class PostsList extends Component {
+class Dashboard extends Component {
   state = {
     lastColumn : '',
   }
 
   render(){
-
     const { postIds, order, sortList } = this.props;
     
     const toggleOrder = (column) => {
-      let sort;
-
-      if(this.state.lastColumn === column) {
-        sort = !order
-      } else {
-        this.setState({lastColumn : column});
-        sort = true
-      }
-      console.log('lastColumn: ', this.state.lastColumn)      
+      const sort = (this.state.lastColumn === column) ? !order : true 
+      this.setState({lastColumn : column});
       return sortList.sortPost(column, sort)
     }    
 
@@ -47,13 +39,13 @@ class PostsList extends Component {
   }
 }
 
+//Selector: Reordena a lista após ação do usuário.
 const sortingList = createSelector(
   state => state.posts,
   state => state.column,
   state => state.order,
   state => state,
-  (posts, column, order, teste) => {
-    console.log('selector: ', order)
+  (posts, column, order) => {
     const sortingList = Object.values(posts).sort(sortList(column, order));
     return sortingList.map(post => post.id);
   }
@@ -69,10 +61,6 @@ const mapStateToProps = (store) => {
   }
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    sortList : bindActionCreators(postsActions, dispatch)
-  }
-};
+const mapDispatchToProps = dispatch => ({sortList : bindActionCreators(postsActions, dispatch)})
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostsList)
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

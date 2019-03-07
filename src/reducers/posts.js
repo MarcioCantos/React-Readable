@@ -3,7 +3,7 @@ import {
   SUCCESS_POSTS,
   FAILURE_POSTS,
   SORT_POST_BY,
-} from '../actions/types'
+} from '../actions/const'
 
 const INITIAL_STATE = {
   posts: [],
