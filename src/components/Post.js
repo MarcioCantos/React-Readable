@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { formatDate } from '../utils/helpers';
+import { timeSince } from '../utils/helpers';
 import Rating from './Rating';
-import CommentsList from './CommentsList';
+// import CommentsList from './CommentsList';
 
 const Post = ({post}) => {
   return (
@@ -31,10 +31,10 @@ const Post = ({post}) => {
         </p>
           <Rating score={post.voteScore}/>
         <p>
-          timestamp: {formatDate(post.timestamp)}
+          timestamp: {timeSince(post.timestamp)}
         </p>
       </div>
-      <CommentsList />
+      {/* <CommentsList /> */}
     </div>
   )
 }

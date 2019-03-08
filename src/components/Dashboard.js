@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as postsActions from '../actions/posts';
 import { createSelector } from 'reselect'
 import { sortList } from '../utils/helpers'
+//actions creators
+import * as postsActions from '../actions/posts';
 import Post from './Post';
 
 
 class Dashboard extends Component {
   state = {
     lastColumn : '',
+  }
+
+  componentDidMount(){
+    this.props.posts.requestPostsList();
   }
 
   render(){
@@ -23,6 +28,10 @@ class Dashboard extends Component {
 
     return(
       <div>        
+        <button onClick={() => toggleOrder('title')}>Order by Title</button>
+        <button onClick={() => toggleOrder('timestamp')}>Order by Date</button>
+        <button onClick={() => toggleOrder('voteScore')}>Order by Vote Score</button>
+        <button onClick={() => toggleOrder('commentCount')}>Order by Comment Count</button>
         <ul>
           { postIds.map((id) => (
             <li key={id}>
@@ -30,10 +39,6 @@ class Dashboard extends Component {
             </li>
           ))}
         </ul>
-        <button onClick={() => toggleOrder('title')}>Order by Title</button>
-        <button onClick={() => toggleOrder('timestamp')}>Order by Date</button>
-        <button onClick={() => toggleOrder('voteScore')}>Order by Vote Score</button>
-        <button onClick={() => toggleOrder('commentCount')}>Order by Comment Count</button>
       </div>
     )
   }
@@ -61,6 +66,11 @@ const mapStateToProps = (store) => {
   }
 };
 
-const mapDispatchToProps = dispatch => ({sortList : bindActionCreators(postsActions, dispatch)})
+const mapDispatchToProps = dispatch =>{
+  return {
+    posts : bindActionCreators(postsActions, dispatch),
+    sortList : bindActionCreators(postsActions, dispatch),
+  }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

@@ -1,17 +1,44 @@
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en';
+
 /**
- * Converte o 'timestamp' recebido para o formato brasileiro de data dd/mm/yy
- * Source: code extracted from Udacity course, "Clone Tweet"
- *
- * @export
- * @param {any} timestamp
- * @returns
- */
-export function formatDate(timestamp){
-  const d = new Date(timestamp)
-  const time = d.toLocaleDateString('pt-BR')
-  // return time.substr(0, 5) + '/' + time.slice(-2) + ' | ' + d.toLocaleDateString()
-  return  time.substr(0, 5) + '/' + time.slice(-2)
+ * Calculate how much time since the post date
+ * It uses a npm package called javascript-time-ago
+ * (https://www.npmjs.com/package/javascript-time-ago)
+ * 
+*/ 
+export function timeSince(date) {
+  TimeAgo.addLocale(en);
+  const timeAgo = new TimeAgo('en-US');
+  return timeAgo.format(new Date(date));
 }
+
+function generateID(){
+  return Math.random().toString(36).substring(2, 15) 
+    + Math.random().toString(36).substring(2, 15);
+}
+
+export function formatPost({title, body, author, category}){
+  return {
+    id : generateID(),
+    author,
+    title,
+    body,
+    category,
+    timestamp : Date.now(),
+  }
+}
+
+
+//use the id of content as index of the array
+export function getIdAsIndex(array) {
+  return (
+    array.reduce((all, line) => {
+      all[line.id] = line
+      return all
+    }, {})
+  )
+} 
 
 /**
  * 

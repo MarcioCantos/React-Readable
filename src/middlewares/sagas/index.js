@@ -3,11 +3,13 @@ import {
   SUCCESS_POSTS,
   FAILURE_POSTS,
   ADD_POST,
+  SUCCESS_ADD_POST,
   REQUEST_COMMENTS_BY_POST,
   SUCCESS_LIST_COMMENTS,
 } from '../../actions/const'
 import { takeLatest, put, call, delay } from 'redux-saga/effects';
-import * as PostsAPI from '../../utils/apis/PostsAPI'
+import * as PostsAPI from '../../utils/apis/PostsAPI';
+import { getIdAsIndex, formatPost } from '../../utils/helpers';
 import { showLoading, hideLoading } from 'react-redux-loading';
 
 function* requestAllPosts() {
@@ -15,9 +17,12 @@ function* requestAllPosts() {
     showLoading();
     yield delay(1000)
     const response = yield call(PostsAPI.getAll)    
-    const posts = getIdAsIndex(response);
+    // const posts = getIdAsIndex(response);
 
-    yield put({ type: SUCCESS_POSTS, posts });
+    yield put({ 
+      type: SUCCESS_POSTS, 
+      posts : getIdAsIndex(response),
+    });
 
     hideLoading();
 
@@ -26,28 +31,24 @@ function* requestAllPosts() {
   }
 }
 
-function* handleAddPost(post){
-  
+function* addNewPost({post}){
+  console.log('esperando post: ', post)
+  console.log('Inserting post: ', formatPost(post) )
+  const response = yield call(PostsAPI.addPost, formatPost(post))
+  yield put({
+    type : SUCCESS_ADD_POST,
+    post : response,
+  })
+
 }
 
 function* requestAllCommentsByPost(postID){
-
   const response = yield call(PostsAPI.getAllCommentsByPost, postID)
-
   yield put({type: SUCCESS_LIST_COMMENTS, response})
-
 }
-
-//use the id of content as index of the array
-const getIdAsIndex = (array) => 
-  array.reduce((all, line) => {
-    all[line.id] = line
-    return all
-  }, {})
-
 
 export default function* root(){
   yield takeLatest(REQUEST_POSTS, requestAllPosts);
-  yield takeLatest(ADD_POST, handleAddPost)
+  yield takeLatest(ADD_POST, addNewPost)
   yield takeLatest(REQUEST_COMMENTS_BY_POST, requestAllCommentsByPost)
 }

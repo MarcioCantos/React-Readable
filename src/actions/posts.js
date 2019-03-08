@@ -3,7 +3,6 @@ import {
   SORT_POST_BY,
   ADD_POST,
   REQUEST_COMMENTS_BY_POST,
-  SUCCESS_LIST_COMMENTS,
 } from './const'
 
 export function requestPostsList(){
@@ -12,7 +11,7 @@ export function requestPostsList(){
   }
 }
 
-function addPost(post){
+export function addPost(post){
   return {
     type : ADD_POST,
     post,
