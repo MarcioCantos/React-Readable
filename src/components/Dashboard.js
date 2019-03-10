@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createSelector } from 'reselect'
@@ -8,22 +8,20 @@ import * as postsActions from '../actions/posts';
 import Post from './Post';
 
 
-class Dashboard extends Component {
-  state = {
-    lastColumn : '',
-  }
+function Dashboard(props) {
 
-  componentDidMount(){
-    this.props.posts.requestPostsList();
-  }
+  const [column, setColumn] = useState('')
 
-  render(){
-    const { postIds, order, sortList } = this.props;
+  useEffect(()=>{
+    props.posts.requestPostsList();
+  }, [])
+
+    const { postIds, order, posts } = props;
     
-    const toggleOrder = (column) => {
-      const sort = (this.state.lastColumn === column) ? !order : true 
-      this.setState({lastColumn : column});
-      return sortList.sortPost(column, sort)
+    const toggleOrder = (c) => {
+      const sort = (column === c) ? !order : true 
+      setColumn(c);
+      return posts.sortPost(column, sort)
     }    
 
     return(
@@ -41,7 +39,6 @@ class Dashboard extends Component {
         </ul>
       </div>
     )
-  }
 }
 
 //Selector: Reordena a lista após ação do usuário.
@@ -57,6 +54,7 @@ const sortingList = createSelector(
 );
 
 const mapStateToProps = (store) => {
+  console.log('nova store:', store)
   const {posts, column, order } = store.posts
   const initialList = Object.keys(posts).map(id => id);
   return {
@@ -68,8 +66,7 @@ const mapStateToProps = (store) => {
 
 const mapDispatchToProps = dispatch =>{
   return {
-    posts : bindActionCreators(postsActions, dispatch),
-    sortList : bindActionCreators(postsActions, dispatch),
+    posts : bindActionCreators(postsActions, dispatch)
   }
 }
 

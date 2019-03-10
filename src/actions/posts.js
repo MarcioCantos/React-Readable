@@ -2,6 +2,7 @@ import {
   REQUEST_POSTS,
   SORT_POST_BY,
   ADD_POST,
+  DELETE_POST,
   REQUEST_COMMENTS_BY_POST,
 } from './const'
 
@@ -15,6 +16,13 @@ export function addPost(post){
   return {
     type : ADD_POST,
     post,
+  }
+}
+
+export function deletePost(id){
+  return {
+    type : DELETE_POST,
+    id,
   }
 }
 

@@ -3,17 +3,14 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { addPost } from '../actions/posts';
 
-function NewPost(props){    
-
-    // const [title, setTitle] = useState('');
-    // const [body, setBody] = useState('');
-    // const [author, setAuthor] = useState('');
-    // const [category, setCategory] = useState('');
+function NewPost(props){   
+    
     const title = useFormImput('')
     const body = useFormImput('')
     const author = useFormImput('')
     const category = useFormImput('')
 
+    
     const handleSubmit = (e) => {
         e.preventDefault();
         props.addPost({
@@ -22,6 +19,12 @@ function NewPost(props){
             author : author.value,
             category : category.value,
          });
+        
+         title.bind.reset();
+         body.bind.reset();
+         category.bind.reset();
+         author.bind.reset();
+        
     }
 
     /**
@@ -73,6 +76,7 @@ function useFormImput(initialValue) {
     return {
         value,
         onChange : handleChange,
+        bind : {reset: () => setValue(""),}
     };
 }
 

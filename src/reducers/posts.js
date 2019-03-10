@@ -4,6 +4,7 @@ import {
   FAILURE_POSTS,
   SORT_POST_BY,
   SUCCESS_ADD_POST,
+  SUCCESS_DELETE_POST,
 } from '../actions/const'
 
 const INITIAL_STATE = {
@@ -16,23 +17,31 @@ const INITIAL_STATE = {
 export default function requestPosts(state = INITIAL_STATE, action) {
   switch(action.type) {
 
-    case REQUEST_POSTS :
+    case REQUEST_POSTS:
       return { ...state, loading: true};
 
-    case FAILURE_POSTS :
+    case FAILURE_POSTS:
         return {data: [], loading: false, error: true};
 
-    case SUCCESS_POSTS :
+    case SUCCESS_POSTS:
       return {
-        posts: action.posts, order : false, loading: false, error: false};
+        posts : action.posts, order : false, loading: false, error: false
+      };
 
     case SUCCESS_ADD_POST:
       return {
         ...state,
         [action.post.id] : action.post
       }
+    
+    case SUCCESS_DELETE_POST:
+      //ES7 Object Rest Spread operator
+      const { [action.post.id]:post, ...posts} = state.posts
+      return {
+        posts, order : false, loading: false, error: false
+      };
 
-    case SORT_POST_BY :
+    case SORT_POST_BY:
         return {...state, column : action.column, order : action.order}
 
     default :

@@ -4,8 +4,12 @@ import {
   FAILURE_POSTS,
   ADD_POST,
   SUCCESS_ADD_POST,
+  FAILURE_ADD_POST,
+  SUCCESS_DELETE_POST,
+  FAILURE,
   REQUEST_COMMENTS_BY_POST,
   SUCCESS_LIST_COMMENTS,
+  DELETE_POST,
 } from '../../actions/const'
 import { takeLatest, put, call, delay } from 'redux-saga/effects';
 import * as PostsAPI from '../../utils/apis/PostsAPI';
@@ -32,13 +36,26 @@ function* requestAllPosts() {
 }
 
 function* addNewPost({post}){
-  console.log('esperando post: ', post)
-  console.log('Inserting post: ', formatPost(post) )
   const response = yield call(PostsAPI.addPost, formatPost(post))
-  yield put({
-    type : SUCCESS_ADD_POST,
-    post : response,
-  })
+  try {
+    yield put({
+      type : SUCCESS_ADD_POST,
+      post : response,
+    })
+    
+  } catch (err) {
+    yield put({ type: FAILURE_ADD_POST });
+  }
+
+}
+
+function* deletePost({id}){
+  try {
+    const post = yield call(PostsAPI.deletePost, id)
+    yield put({ type: SUCCESS_DELETE_POST, post})
+  } catch (err) {
+    console.log('Ooops: ', err)
+  }
 
 }
 
@@ -49,6 +66,7 @@ function* requestAllCommentsByPost(postID){
 
 export default function* root(){
   yield takeLatest(REQUEST_POSTS, requestAllPosts);
-  yield takeLatest(ADD_POST, addNewPost)
+  yield takeLatest(ADD_POST, addNewPost);
+  yield takeLatest(DELETE_POST, deletePost);
   yield takeLatest(REQUEST_COMMENTS_BY_POST, requestAllCommentsByPost)
 }

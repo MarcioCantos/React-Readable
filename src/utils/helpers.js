@@ -29,7 +29,6 @@ export function formatPost({title, body, author, category}){
   }
 }
 
-
 //use the id of content as index of the array
 export function getIdAsIndex(array) {
   return (

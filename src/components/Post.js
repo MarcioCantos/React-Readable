@@ -1,10 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { timeSince } from '../utils/helpers';
+import { deletePost } from '../actions/posts'
 import Rating from './Rating';
 // import CommentsList from './CommentsList';
 
-const Post = ({post}) => {
+const Post = ({post, onDeleteClick}) => {
+
   return (
     <div>
       <div>
@@ -29,12 +32,17 @@ const Post = ({post}) => {
         <p>
           qtd. Comentários: {post.commentCount}
         </p>
-          <Rating score={post.voteScore}/>
         <p>
           timestamp: {timeSince(post.timestamp)}
         </p>
+        <Rating score={post.voteScore}/>
+        <div>
+          <button onClick={() => onDeleteClick(post.id)}>Delete</button>
+        </div>
+
       </div>
       {/* <CommentsList /> */}
+      <hr />
     </div>
   )
 }
@@ -45,8 +53,7 @@ const mapStateToProps = (store, {id} ) => {
     post
   }
 }
-
-export default connect(mapStateToProps)(Post)
+export default connect(mapStateToProps, {onDeleteClick: deletePost})(Post)
 
 // author: "thingone"
 // body: "Just kidding. It takes more than 10 minutes to learn technology."

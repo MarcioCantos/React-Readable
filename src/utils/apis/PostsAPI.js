@@ -34,20 +34,27 @@ export const addPost = (post) => {
   )
 }
 
-export const updatePost = (id, title, body) => {
-  return (
-    fetch(`${api}/posts/${id}`, {
-      method: 'PUT',
-      headers: {
-        ...headers,
-        'Content-Type': 'application/json'
-      },
-      title: JSON.stringify({ title }),
-      body: JSON.stringify({ body })
-    }).then(res => res.json())
+export const deletePost = (id) => 
+  fetch(`${api}/posts/${id}`, {
+    method: 'DELETE',
+    headers,
+  }).then(data => data.json())
+  
 
-  )
-}
+// export const updatePost = (id, title, body) => {
+//   return (
+//     fetch(`${api}/posts/${id}`, {
+//       method: 'PUT',
+//       headers: {
+//         ...headers,
+//         'Content-Type': 'application/json'
+//       },
+//       title: JSON.stringify({ title }),
+//       body: JSON.stringify({ body })
+//     }).then(res => res.json())
+
+//   )
+// }
 
 
 export const getAllCommentsByPost = (postId) =>
