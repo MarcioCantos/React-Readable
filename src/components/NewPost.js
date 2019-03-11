@@ -26,7 +26,6 @@ function NewPost(props){
          author.bind.reset();
         
     }
-
     /**
      * todo: Redirect to / if submited
      */
@@ -56,7 +55,7 @@ function NewPost(props){
                 <button
                     className='btn'
                     type='submit'
-                    disabled={body === ''}>
+                    disabled={body.value === ''}>
                         Submit
                 </button>
             </form>

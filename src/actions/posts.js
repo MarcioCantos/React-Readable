@@ -26,7 +26,7 @@ export function deletePost(id){
   }
 }
 
-export function sortPost(param, order){  
+export function sortPosts(param, order){  
   return {
     type : SORT_POST_BY,
     column : param,

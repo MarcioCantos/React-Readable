@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createSelector } from 'reselect'
 import { sortList } from '../utils/helpers'
 //actions creators
-import * as postsActions from '../actions/posts';
+import { sortPosts } from '../actions/posts';
 import Post from './Post';
 
 
@@ -12,33 +12,31 @@ function Dashboard(props) {
 
   const [column, setColumn] = useState('')
 
-  useEffect(()=>{
-    props.posts.requestPostsList();
-  }, [])
+  const { postIds, order, sortList } = props;
+  
+  const toggleOrder = (c) => {
+    console.log('1: ',column)
+    console.log('2: ',order)
+    const sort = (column === c) ? !order : true 
+    setColumn(c);
+    sortList(c, sort)
+  }    
 
-    const { postIds, order, posts } = props;
-    
-    const toggleOrder = (c) => {
-      const sort = (column === c) ? !order : true 
-      setColumn(c);
-      return posts.sortPost(column, sort)
-    }    
-
-    return(
-      <div>        
-        <button onClick={() => toggleOrder('title')}>Order by Title</button>
-        <button onClick={() => toggleOrder('timestamp')}>Order by Date</button>
-        <button onClick={() => toggleOrder('voteScore')}>Order by Vote Score</button>
-        <button onClick={() => toggleOrder('commentCount')}>Order by Comment Count</button>
-        <ul>
-          { postIds.map((id) => (
-            <li key={id}>
-              <Post id={id} />
-            </li>
-          ))}
-        </ul>
-      </div>
-    )
+  return(
+    <div>        
+      <button onClick={() => toggleOrder('title')}>Order by Title</button>
+      <button onClick={() => toggleOrder('timestamp')}>Order by Date</button>
+      <button onClick={() => toggleOrder('voteScore')}>Order by Vote Score</button>
+      <button onClick={() => toggleOrder('commentCount')}>Order by Comment Count</button>
+      <ul>
+        { postIds.map((id) => (
+          <li key={id}>
+            <Post id={id} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
 }
 
 //Selector: Reordena a lista após ação do usuário.
@@ -54,7 +52,6 @@ const sortingList = createSelector(
 );
 
 const mapStateToProps = (store) => {
-  console.log('nova store:', store)
   const {posts, column, order } = store.posts
   const initialList = Object.keys(posts).map(id => id);
   return {
@@ -64,10 +61,10 @@ const mapStateToProps = (store) => {
   }
 };
 
-const mapDispatchToProps = dispatch =>{
+const mapDispatchToProps = (dispatch) => {
   return {
-    posts : bindActionCreators(postsActions, dispatch)
-  }
+    sortList : bindActionCreators(sortPosts, dispatch)
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
