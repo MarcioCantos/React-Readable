@@ -3,6 +3,7 @@ import {
   SORT_POST_BY,
   ADD_POST,
   DELETE_POST,
+  RATE_POST,
   REQUEST_COMMENTS_BY_POST,
 } from './const'
 
@@ -23,6 +24,14 @@ export function deletePost(id){
   return {
     type : DELETE_POST,
     id,
+  }
+}
+
+export function ratePost(id, vote){
+  return {
+    type : RATE_POST,
+    id,
+    vote,
   }
 }
 

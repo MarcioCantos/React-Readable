@@ -18,21 +18,12 @@ export const getAll = () =>
     .then(res => res.json())
     .then(data => data)
 
-export const addPost = (post) => {
-  return (
-    fetch(`${api}/posts/`, {
+export const addPost = (post) => 
+  fetch(`${api}/posts/`, {
       method: 'POST',
-      headers: {
-        ...headers,
-        'Content-Type': 'application/json'
-      }, 
-      body: JSON.stringify({ 
-        ...post,
-        voteScore : 0,
-      }),
+      headers: {...headers, 'Content-Type': 'application/json'}, 
+      body: JSON.stringify({...post}),
     }).then(data => data.json())
-  )
-}
 
 export const deletePost = (id) => 
   fetch(`${api}/posts/${id}`, {
@@ -40,21 +31,14 @@ export const deletePost = (id) =>
     headers,
   }).then(data => data.json())
   
-
-// export const updatePost = (id, title, body) => {
-//   return (
-//     fetch(`${api}/posts/${id}`, {
-//       method: 'PUT',
-//       headers: {
-//         ...headers,
-//         'Content-Type': 'application/json'
-//       },
-//       title: JSON.stringify({ title }),
-//       body: JSON.stringify({ body })
-//     }).then(res => res.json())
-
-//   )
-// }
+export const addPostScore = (id, vote) => 
+    fetch(`${api}/posts/${id}`, {
+      method: 'POST',
+      headers: {...headers, 'Content-Type': 'application/json'}, 
+      body: JSON.stringify({option : vote}),
+    })
+    .then(res => res.json())
+    .then(data => data.json())
 
 
 export const getAllCommentsByPost = (postId) =>

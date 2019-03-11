@@ -1,8 +1,8 @@
-import React, { Component, Fragment, useEffect } from 'react';
+import React, { Component, Fragment } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import LoadingBar from 'react-redux-loading';
-
+//action creator
 import {requestPostsList} from '../actions/posts'
 //components
 import Dashboard from './Dashboard';
@@ -17,16 +17,20 @@ class App extends Component {
   }  
 
   render() {
+    const{loading} = this.props.posts
     return (
       <Router>
         <Fragment>
           <LoadingBar />
-          <div>
-            <Nav />
-            <Route path='/' exact component={Dashboard} />
-            <Route path='/new' component={NewPost} />
-            <Route path='/post' component={PostPage} />
-          </div>
+          <Nav />
+          {loading === true
+          ? null
+          : <div>              
+              <Route path='/' exact component={Dashboard} />
+              <Route path='/post/:id' component={PostPage} />
+              <Route path='/new' component={NewPost} />
+            </div>          
+          }
         </Fragment>
       </Router>
     );
@@ -34,9 +38,7 @@ class App extends Component {
 }
 
 
-const mapStateToProps = (store) => {
-  const { posts } = store.posts
-  const initialList = Object.keys(posts).map(id => id);
+const mapStateToProps = ({posts}) => {
   return {
     posts,
   };

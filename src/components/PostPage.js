@@ -15,8 +15,9 @@ class PostPage extends Component {
 }
 
 function mapStateToProps(store, props){
-    const id = '8xf0y6ziyjabvozdd253nd';
-
+    console.log('storeeeeeee',props)
+    const { id } = props.match.params;
+    console.log('idddd: ', id)
     return { id }
 
 }

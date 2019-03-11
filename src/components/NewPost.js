@@ -1,15 +1,16 @@
 import React, {useState} from 'react';
+import { Redirect } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { addPost } from '../actions/posts';
 
 function NewPost(props){   
-    
+    const [toHome, setToHome] = useState(false);
+
     const title = useFormImput('')
     const body = useFormImput('')
     const author = useFormImput('')
     const category = useFormImput('')
-
     
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -19,19 +20,20 @@ function NewPost(props){
             author : author.value,
             category : category.value,
          });
-        
-         title.bind.reset();
-         body.bind.reset();
-         category.bind.reset();
-         author.bind.reset();
-        
+         resetFields();
+         setToHome(true);
     }
-    /**
-     * todo: Redirect to / if submited
-     */
+
+    const resetFields = () => {
+        title.bind.reset();
+        body.bind.reset();
+        category.bind.reset();
+        author.bind.reset();
+    }    
     
     return (
         <div>
+            {toHome && <Redirect to='/' />}
             <h3>Compose New Post</h3>
             <form onSubmit={handleSubmit}>
                 <input
