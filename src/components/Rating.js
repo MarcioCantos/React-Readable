@@ -2,18 +2,22 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { ratePost } from '../actions/posts'
 
-const Rating = ({score, id, ratePost}) => {
+const Rating = ({id, vote, ratePost}) => {
   const [voteUp, setVoteUp] = useState(false);
   const [voteDown, setVoteDown] = useState(false);
   
-  const handleVoteUp = () => {
-    setVoteUp(!voteUp);
-    setVoteDown(false);
+  const handleVoteDown = (rate) => {
+    setVoteDown(rate)
+    rate ? submitRatePost('downVote') : submitRatePost('upVote');
+    voteUp && submitRatePost('downVote');
+    setVoteUp(false)
   }
 
-  const handleVoteDown = () => {
-    setVoteDown(!voteDown)
-    setVoteUp(false)
+  const handleVoteUp = (rate) => {
+    setVoteUp(rate);
+    rate ? submitRatePost('upVote') : submitRatePost('downVote');
+    voteDown && submitRatePost('upVote');
+    setVoteDown(false);
   }
 
   const submitRatePost = (rate) => {
@@ -22,14 +26,17 @@ const Rating = ({score, id, ratePost}) => {
 
   return (
     <div>
-      <button type="submit" onClick={handleVoteDown}>-</button>
-      {voteUp && score + 1}
-      {voteDown && score - 1}
-      {voteUp || voteDown ? "" : score }
-      <button onClick={handleVoteUp}>+</button>
+      <button onClick={() => handleVoteDown(!voteDown)}>-</button>
+      {voteUp && vote }
+      {voteDown && vote }
+      {voteUp || voteDown ? "" : vote }
+      <button onClick={() => handleVoteUp(!voteUp)}>+</button>
     </div>
   )
 }
 
+const mapStateToProps = (store, {id}) => {
+  return {vote : store.posts.posts[id].voteScore}
+}
 
-export default connect(null, {ratePost})(Rating);
+export default connect(mapStateToProps, {ratePost})(Rating);

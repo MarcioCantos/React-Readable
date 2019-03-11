@@ -46,9 +46,9 @@ export default function posts(state = INITIAL_STATE, action) {
       return {
         ...state,
         posts: {
-          ...state.posts, 
-          [action.post.id] : {
-            ...state.vote[action.post.id],
+          ...state.posts,
+          [action.vote.id] : {
+            ...state.posts[action.vote.id],
             voteScore : action.vote.vote,
           }}
       }

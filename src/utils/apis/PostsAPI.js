@@ -31,14 +31,12 @@ export const deletePost = (id) =>
     headers,
   }).then(data => data.json())
   
-export const addPostScore = (id, vote) => 
+export const addPostScore = ({id, vote}) => 
     fetch(`${api}/posts/${id}`, {
       method: 'POST',
       headers: {...headers, 'Content-Type': 'application/json'}, 
       body: JSON.stringify({option : vote}),
-    })
-    .then(res => res.json())
-    .then(data => data.json())
+    }).then(data => data.json())
 
 
 export const getAllCommentsByPost = (postId) =>

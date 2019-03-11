@@ -10,9 +10,8 @@ import Post from './Post';
 
 function Dashboard(props) {
   const [column, setColumn] = useState('');
-
   const { postIds, order, sortList } = props;
-  
+    
   const toggleOrder = (c) => {
     const sort = (column === c) ? !order : true ;
     setColumn(c);
