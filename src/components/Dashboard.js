@@ -9,17 +9,14 @@ import Post from './Post';
 
 
 function Dashboard(props) {
-
-  const [column, setColumn] = useState('')
+  const [column, setColumn] = useState('');
 
   const { postIds, order, sortList } = props;
   
   const toggleOrder = (c) => {
-    console.log('1: ',column)
-    console.log('2: ',order)
-    const sort = (column === c) ? !order : true 
+    const sort = (column === c) ? !order : true ;
     setColumn(c);
-    sortList(c, sort)
+    sortList(c, sort);
   }    
 
   return(
@@ -36,7 +33,7 @@ function Dashboard(props) {
         ))}
       </ul>
     </div>
-  )
+  );
 }
 
 //Selector: Reordena a lista após ação do usuário.
@@ -58,7 +55,7 @@ const mapStateToProps = (store) => {
     posts,
     order,
     postIds : column === undefined ? initialList : sortingList(store.posts),
-  }
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -67,4 +64,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
