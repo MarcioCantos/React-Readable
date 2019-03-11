@@ -3,7 +3,7 @@ import { NavLink, withRouter } from 'react-router-dom'
 
 class Nav extends Component {
   render() {
-    const { categories } = this.props
+    // const { categories } = this.props
 
     return (
       <nav className='nav'>
@@ -18,7 +18,7 @@ class Nav extends Component {
               New Post
             </NavLink>
           </li>
-          {
+          {/* {
             categories.map(cat => (
               <li key={cat}>
                 <NavLink to={`/${cat}`}>
@@ -26,7 +26,7 @@ class Nav extends Component {
                 </NavLink>
               </li>
             ))
-          }
+          } */}
         </ul>
       </nav>
     )

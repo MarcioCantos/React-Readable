@@ -1,36 +1,31 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment, useEffect } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-//actions creators
-import * as postsActions from '../actions/posts';
-import * as authedUser from '../actions/authedUser';
+import LoadingBar from 'react-redux-loading';
+
+import {requestPostsList} from '../actions/posts'
 //components
-import PostsList from './PostsList';
+import Dashboard from './Dashboard';
 import NewPost from './NewPost';
+import PostPage from './PostPage';
 import Nav from './Nav';
 
 class App extends Component {
 
   componentDidMount(){
-    const userId = "thingone";
-    this.props.posts.requestPostsList();
-    this.props.authedUser.setAuthedUser(userId);
-  }
+    this.props.getPost();
+  }  
 
   render() {
     return (
       <Router>
         <Fragment>
+          <LoadingBar />
           <div>
-            <Nav categories={this.props.categories}/>
-            { this.props.loading === true
-              ? 'loading...'
-              : <div>
-              <Route path='/' exact component={PostsList} />
-              <Route path='/new' component={NewPost} />
-              </div>
-            }
+            <Nav />
+            <Route path='/' exact component={Dashboard} />
+            <Route path='/new' component={NewPost} />
+            <Route path='/post' component={PostPage} />
           </div>
         </Fragment>
       </Router>
@@ -38,19 +33,19 @@ class App extends Component {
   }
 }
 
-function mapStateToProps(store) {
-  const { posts, loading } = store.posts
-  return {
-    loading,
-    categories : Object.values(posts).map(cat => cat.category),
-  }
-}
 
-const mapDispatchToProps = dispatch =>{
+const mapStateToProps = (store) => {
+  const { posts } = store.posts
+  const initialList = Object.keys(posts).map(id => id);
   return {
-    posts : bindActionCreators(postsActions, dispatch),
-    authedUser :  bindActionCreators(authedUser, dispatch),
-  }
+    posts,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getPost : ()=> dispatch(requestPostsList())
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

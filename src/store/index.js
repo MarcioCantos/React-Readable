@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware } from 'redux'
 import createSagaMiddleware from 'redux-saga';
-import rootSaga from '../sagas'
+import rootSaga from '../middlewares/sagas/'
 import reducers from '../reducers'
 import logger from '../middlewares/logger';
 
@@ -12,7 +12,7 @@ const store = createStore(
   reducers,
   applyMiddleware(
     sagaMiddleware,
-    logger
+    logger,
   )
 );
 
