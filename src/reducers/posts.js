@@ -10,7 +10,7 @@ import {
 
 const INITIAL_STATE = {
   posts: [],
-  loading : false,
+  categories: [],
   error : false,
   order : false,
 }
@@ -19,20 +19,20 @@ export default function posts(state = INITIAL_STATE, action) {
   switch(action.type) {
 
     case REQUEST_POSTS :
-      return { ...state, loading: true};
+      return { ...state };
 
     case FAILURE_POSTS :
-        return {data: [], loading: false, error: true};
+        return {data: [], error: true};
 
     case SUCCESS_POSTS :
       return {
-        posts : action.posts, order : false, loading: false, error: false
+        posts: action.posts, categories: action.categories, order : false, error: false
       };
 
     case SUCCESS_ADD_POST :
       return {
         ...state,
-        posts: {...state.posts, [action.post.id] : action.post}
+        posts: {...state.posts, [action.post.id]: action.post}
       }
     
     case SUCCESS_DELETE_POST :
@@ -52,7 +52,7 @@ export default function posts(state = INITIAL_STATE, action) {
       }
 
     case SORT_POST_BY :
-        return {...state, column : action.column, order : action.order}
+        return {...state, column: action.column, order: action.order}
 
     default :
     return state;

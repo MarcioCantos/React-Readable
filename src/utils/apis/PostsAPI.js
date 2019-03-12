@@ -13,6 +13,14 @@ const headers = {
   'Authorization': token
 }
 
+export const getCategories = () =>
+  fetch(`${api}/categories`, { headers })
+  .then(res => res.json())
+  .then(data => data)
+
+
+/** POSTS */
+
 export const getAll = () =>
   fetch(`${api}/posts`, { headers })
     .then(res => res.json())
@@ -39,7 +47,22 @@ export const addPostScore = ({id, vote}) =>
     }).then(data => data.json())
 
 
+    /** COMMENTS */
+
 export const getAllCommentsByPost = (id) =>
   fetch(`${api}/posts/${id}/comments`, { headers })
     .then(res => res.json())
     .then(data => data)
+
+export const addComment = (comment) => 
+  fetch(`${api}/comments/`, {
+      method: 'POST',
+      headers: {...headers, 'Content-Type': 'application/json'}, 
+      body: JSON.stringify({...comment}),
+    }).then(data => data.json())
+
+export const deleteComment = (id) => 
+  fetch(`${api}/comments/${id}`, {
+    method: 'DELETE',
+    headers,
+  }).then(data => data.json())

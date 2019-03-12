@@ -13,10 +13,11 @@ import {
     }
   }
   
-  export function addComments(comment){
+  export function addComments(comment, parentId){
     return {
       type : ADD_COMMENT,
       comment,
+      parentId,
     }
   }
   

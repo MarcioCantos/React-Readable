@@ -1,8 +1,9 @@
 import React, {Fragment} from 'react';
 import { connect } from 'react-redux';
+import { deleteComment } from '../../actions/comments';
 
-const Comment = ({comment}) => {
-    const {author, body, voteScore} = comment;
+const Comment = ({comment, onDeleteClick}) => {
+    const {id, author, body, voteScore} = comment;
     return (
         <Fragment>
                 <div>
@@ -15,6 +16,7 @@ const Comment = ({comment}) => {
                     <p>
                         {voteScore}
                     </p>
+                    <button onClick={() => onDeleteClick(id)}>Delete</button>
                 </div>
 
         </Fragment>
@@ -27,4 +29,4 @@ const mapStateToProps = ({comments}, {id}) => {
     }
 }
 
-export default connect(mapStateToProps)(Comment);
+export default connect(mapStateToProps,{onDeleteClick: deleteComment})(Comment);

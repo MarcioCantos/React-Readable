@@ -1,12 +1,12 @@
 import React, {Fragment} from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom'
-import { timeSince } from '../utils/helpers';
-import { deletePost } from '../actions/posts'
-import Rating from './Rating';
+import { timeSince } from '../../utils/helpers';
+import { deletePost } from '../../actions/posts';
+import Rating from '../shared/Rating';
 // import CommentsList from './CommentsList';
 
-const Post = ({post, onDeleteClick, history}) => {
+const Post = ({post, commentCount, onDeleteClick, history}) => {
 
   const toCategory = (e, category) => {
     e.preventDefault();
@@ -20,13 +20,7 @@ const Post = ({post, onDeleteClick, history}) => {
       : <div>
           <Link to={`/post/${post.id}`}> 
             <p>
-              título: <b>{post.id}</b>
-            </p>
-            <p>
-              título: {post.title}
-            </p>
-            <p>
-              autor: {post.author}
+              {post.title}
             </p>
             <p>
               autor: {post.author}
@@ -41,7 +35,7 @@ const Post = ({post, onDeleteClick, history}) => {
               </button>
             </p>
             <p>
-              qtd. Comentários: {post.commentCount}
+              qtd. Comentários: {commentCount === 0 ? post.commentCount : commentCount}
             </p>
             <p>
               timestamp: {timeSince(post.timestamp)}
@@ -57,12 +51,20 @@ const Post = ({post, onDeleteClick, history}) => {
   )
 }
 
+const updateCommentsCount = (state) => {
+
+  return 1;
+}
+
 const mapStateToProps = (store, {id} ) => {
   const post = store.posts.posts[id];
   const loading = store.posts.loading;
+  const commentCount = store.comments.qtdComments;
+  
   return {
     post,
     loading,
+    commentCount : commentCount,
   }
 }
 export default withRouter(

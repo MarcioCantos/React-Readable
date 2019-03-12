@@ -2,11 +2,14 @@ import React, {useState} from 'react';
 import { Redirect } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { addPost } from '../actions/posts';
+import { addPost } from '../../actions/posts';
+import { useFormImput } from '../../utils/useFields';
+import { resetFields } from '../../utils/helpers';
 
 function NewPost(props){   
     const [toHome, setToHome] = useState(false);
 
+    //set hooks for managing form fields
     const title = useFormImput('')
     const body = useFormImput('')
     const author = useFormImput('')
@@ -20,16 +23,9 @@ function NewPost(props){
             author : author.value,
             category : category.value,
          });
-         resetFields();
+         resetFields(title, body, author, category);
          setToHome(true);
-    }
-
-    const resetFields = () => {
-        title.bind.reset();
-        body.bind.reset();
-        category.bind.reset();
-        author.bind.reset();
-    }    
+    }  
     
     return (
         <div>
@@ -64,21 +60,6 @@ function NewPost(props){
         </div>
     );
 
-}
-
-//Manage form's fields 
-function useFormImput(initialValue) {
-    const [value, setValue] = useState(initialValue);
-
-    function handleChange(e){
-        setValue(e.target.value)
-    }
-
-    return {
-        value,
-        onChange : handleChange,
-        bind : {reset: () => setValue(""),}
-    };
 }
 
 const mapDispatchToProps = dispatch => ({addPost : bindActionCreators(addPost, dispatch)})

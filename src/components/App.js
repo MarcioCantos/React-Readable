@@ -6,9 +6,9 @@ import LoadingBar from 'react-redux-loading';
 import {requestPostsList} from '../actions/posts'
 //components
 import Dashboard from './Dashboard';
-import NewPost from './NewPost';
-import PostPage from './PostPage';
-import Nav from './Nav';
+import NewPost from './posts/NewPost';
+import PostPage from './posts/PostPage';
+import Nav from './shared/Nav';
 
 class App extends Component {
 

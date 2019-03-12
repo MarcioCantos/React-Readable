@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { requestComentsByPost } from '../actions/comments';
-import Post from './Post';
-import Comment from './Comment';
+import { requestComentsByPost } from '../../actions/comments';
+import Post from './index';
+import Comment from '../comments';
+import NewComment from '../comments/NewComment'
 
 const PostPage = ({id, commentID, loadingBar, getPostComments}) => {
     
@@ -26,6 +27,7 @@ const PostPage = ({id, commentID, loadingBar, getPostComments}) => {
                 )) }
               </ul> 
             }
+            <NewComment parentId={id} />
         </div>
     )
 }

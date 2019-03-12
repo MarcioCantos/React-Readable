@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { ratePost } from '../actions/posts'
+import { ratePost } from '../../actions/posts'
 
 const Rating = ({id, vote, ratePost}) => {
   const [voteUp, setVoteUp] = useState(false);
   const [voteDown, setVoteDown] = useState(false);
-
-  console.log("VOTEE:::", vote)
-  
+ 
   const handleVoteDown = (rate) => {
     setVoteDown(rate)
     rate ? submitRatePost('downVote') : submitRatePost('upVote');

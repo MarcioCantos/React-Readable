@@ -29,6 +29,16 @@ export function formatPost({title, body, author, category}){
   }
 }
 
+export function formatComment({body, author, parentId}){
+  return {
+    id : generateID(),
+    author,
+    body,
+    parentId,
+    timestamp : Date.now(),
+  }
+}
+
 //use the id of content as index of the array
 export function getIdAsIndex(array) {
   return (
@@ -68,4 +78,16 @@ export function sortList(key, order) {
     return order ? comparison : (comparison * -1);
   
   };  
+}
+
+/**
+ * Reseta os campos do formulário.
+ * IMPORTANTE: Os campos TEM de receber useFormImput() quando estanciados
+ * ex: const nome = useFormImput('')
+ * ex: const sobrenome = useFormImput('Silva')
+ * 
+ * @param  {...any} args //campos que serão resetados
+ */
+export function resetFields(...args) {
+  return args.map(f => f.bind.reset());
 }

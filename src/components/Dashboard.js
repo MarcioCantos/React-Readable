@@ -5,7 +5,7 @@ import { createSelector } from 'reselect'
 import { sortList } from '../utils/helpers'
 //actions creators
 import { sortPosts } from '../actions/posts';
-import Post from './Post';
+import Post from './posts';
 
 
 function Dashboard(props) {
