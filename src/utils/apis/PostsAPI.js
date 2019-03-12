@@ -39,7 +39,7 @@ export const addPostScore = ({id, vote}) =>
     }).then(data => data.json())
 
 
-export const getAllCommentsByPost = (postId) =>
-fetch(`${api}posts/${postId}/comments`, { headers })
-  .then(res => res.json())
-  .then(data => data)
+export const getAllCommentsByPost = (id) =>
+  fetch(`${api}/posts/${id}/comments`, { headers })
+    .then(res => res.json())
+    .then(data => data)

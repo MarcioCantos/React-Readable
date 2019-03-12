@@ -5,6 +5,8 @@ import { ratePost } from '../actions/posts'
 const Rating = ({id, vote, ratePost}) => {
   const [voteUp, setVoteUp] = useState(false);
   const [voteDown, setVoteDown] = useState(false);
+
+  console.log("VOTEE:::", vote)
   
   const handleVoteDown = (rate) => {
     setVoteDown(rate)

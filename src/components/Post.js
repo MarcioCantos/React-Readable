@@ -10,7 +10,6 @@ const Post = ({post, onDeleteClick, history}) => {
 
   const toCategory = (e, category) => {
     e.preventDefault();
-    console.log('props post: ', history)
     history.push(`/category/${category}`)
   }
 
@@ -48,7 +47,7 @@ const Post = ({post, onDeleteClick, history}) => {
               timestamp: {timeSince(post.timestamp)}
             </p>
           </Link>      
-          <Rating score={post.voteScore} id={post.id}/>
+          <Rating id={post.id}/>
           <div>
             <button onClick={() => onDeleteClick(post.id)}>Delete</button>
           </div>
@@ -59,7 +58,6 @@ const Post = ({post, onDeleteClick, history}) => {
 }
 
 const mapStateToProps = (store, {id} ) => {
-  console.log('store em post:', store)
   const post = store.posts.posts[id];
   const loading = store.posts.loading;
   return {

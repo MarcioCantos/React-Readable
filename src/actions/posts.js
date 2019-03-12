@@ -4,7 +4,6 @@ import {
   ADD_POST,
   DELETE_POST,
   RATE_POST,
-  REQUEST_COMMENTS_BY_POST,
 } from './const'
 
 export function requestPostsList(){
@@ -40,11 +39,5 @@ export function sortPosts(param, order){
     type : SORT_POST_BY,
     column : param,
     order,
-  }
-}
-
-export function requestCommentsByPost(postId) {
-  return {
-      type : REQUEST_COMMENTS_BY_POST,
   }
 }

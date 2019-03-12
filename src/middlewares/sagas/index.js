@@ -5,7 +5,7 @@ import {
   ADD_POST,
   RATE_POST,
   SUCCESS_ADD_POST,
-  FAILURE_ADD_POST,
+  FAILURE,
   SUCCESS_DELETE_POST,
   SUCCESS_RATING_POST,
   REQUEST_COMMENTS_BY_POST,
@@ -27,7 +27,25 @@ function* requestAllPosts() {
       posts : getIdAsIndex(response),
     });
   } catch (err) {
+    console.log('Ooops: ', err);
     yield put({ type: FAILURE_POSTS });
+    yield put(hideLoading());
+  }
+}
+
+function* requestAllCommentsByPost({id}){
+  try {
+    yield put(showLoading());
+    const response = yield call(PostsAPI.getAllCommentsByPost, id);
+    yield put({
+      type: SUCCESS_LIST_COMMENTS, 
+      comments: getIdAsIndex(response),
+    });   
+    yield put(hideLoading());
+    
+  } catch (err) { 
+    console.log('Ooops: ', err);   
+    yield put({ type: FAILURE });
     yield put(hideLoading());
   }
 }
@@ -42,8 +60,9 @@ function* addNewPost({post}){
     });
     yield put(hideLoading());
   } catch (err) {
+    console.log('Ooops: ', err);
     yield put(hideLoading());
-    yield put({ type: FAILURE_ADD_POST });
+    yield put({ type: FAILURE });
   }
 }
 
@@ -66,11 +85,6 @@ function* ratingPost({id, vote}){
   } catch (err) {
     console.log('Ooops: ', err);
   }
-}
-
-function* requestAllCommentsByPost(postID){
-  const response = yield call(PostsAPI.getAllCommentsByPost, postID);
-  yield put({type: SUCCESS_LIST_COMMENTS, response});
 }
 
 export default function* root(){

@@ -38,19 +38,17 @@ export default function posts(state = INITIAL_STATE, action) {
     case SUCCESS_DELETE_POST :
       //ES7 Object Rest Spread operator
       const { [action.post.id]:post, ...posts} = state.posts
-      return {
-        posts, order : false, loading: false, error: false
-      };
+      return { posts, order : false, };
 
     case SUCCESS_RATING_POST :
       return {
         ...state,
         posts: {
-          ...state.posts,
-          [action.vote.id] : {
+        ...state.posts,
+        [action.vote.id] : {
             ...state.posts[action.vote.id],
             voteScore : action.vote.vote,
-          }}
+        }}        
       }
 
     case SORT_POST_BY :
