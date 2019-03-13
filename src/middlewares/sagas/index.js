@@ -19,6 +19,8 @@ import {
   SUCCESS_ADD_COMMENT,
   SUCCESS_UPDATE_COMMENT,
   SUCCESS_DELETE_COMMENT,
+  RATE_COMMENT,
+  SUCCESS_RATING_COMMENT,
   LIST_BY_CATEGORY,
   SUCCESS_LIST_BY_CATEGORY,
 } from '../../actions/const'
@@ -38,6 +40,7 @@ export default function* root(){
   yield takeLatest(ADD_COMMENT, addNewComment);
   yield takeLatest(UPDATE_COMMENT, updateComment);
   yield takeLatest(DELETE_COMMENT, deleteComment);
+  yield takeLatest(RATE_COMMENT, ratingComment);
   yield takeLatest(LIST_BY_CATEGORY, listByCategory);
 }
 
@@ -197,6 +200,17 @@ function* deleteComment({id}){
     yield put(hideLoading());
   } catch (err) {
     yield put(hideLoading());
+    console.log('Ooops: ', err);
+  }
+}
+
+
+
+function* ratingComment({id, vote}){
+  try {
+    const response = yield call(PostsAPI.addCommentScore, {id, vote});
+    yield put({type: SUCCESS_RATING_COMMENT, vote : {id, vote : response.voteScore}});
+  } catch (err) {
     console.log('Ooops: ', err);
   }
 }
