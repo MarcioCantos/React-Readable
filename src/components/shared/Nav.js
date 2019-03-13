@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { NavLink, withRouter } from 'react-router-dom'
+import { connect } from 'react-redux';
 
 class Nav extends Component {
   render() {
-    // const { categories } = this.props
+    const { categories } = this.props
 
     return (
       <nav className='nav'>
@@ -18,19 +19,23 @@ class Nav extends Component {
               New Post
             </NavLink>
           </li>
-          {/* {
-            categories.map(cat => (
-              <li key={cat}>
-                <NavLink to={`/${cat}`}>
-                  {cat}
+          {
+            categories.map(c => (
+              <li key={c.name}>
+                <NavLink to={`/category/${c.path}`} exact>
+                  {c.name}
                 </NavLink>
               </li>
             ))
-          } */}
+          }
         </ul>
       </nav>
     )
   }
 }
 
-export default withRouter(Nav)
+const mapStateToProps = (store) => {
+  return {categories : store.posts.categories};
+}
+
+export default withRouter(connect(mapStateToProps)(Nav))

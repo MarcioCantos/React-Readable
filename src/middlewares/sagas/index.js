@@ -15,6 +15,8 @@ import {
   DELETE_COMMENT,
   SUCCESS_ADD_COMMENT,
   SUCCESS_DELETE_COMMENT,
+  LIST_BY_CATEGORY,
+  SUCCESS_LIST_BY_CATEGORY,
 } from '../../actions/const'
 import { takeLatest, all, takeEvery, put, call, select } from 'redux-saga/effects';
 import * as PostsAPI from '../../utils/apis/PostsAPI';
@@ -30,26 +32,29 @@ export default function* root(){
   yield takeLatest(REQUEST_COMMENTS_BY_POST, requestAllCommentsByPost);
   yield takeLatest(ADD_COMMENT, addNewComment);
   yield takeLatest(DELETE_COMMENT, deleteComment);
+  yield takeLatest(LIST_BY_CATEGORY, listByCategory);
 }
 
 
 function* requestAllPosts() {
-  try {    
+  try {
+
     yield put(showLoading());    
 
+    //get Posts and Categories from PostsAPI
     const [posts, categories] = yield all([
       call(PostsAPI.getAll),
       call(PostsAPI.getCategories)
     ]);
 
-    console.log('categorias em saga: ', categories.categories);
-    // const response = yield call(PostsAPI.getAll);    
     yield put(hideLoading());
+    
     yield put({
       type: SUCCESS_POSTS,
       posts : getIdAsIndex(posts),
       categories: categories.categories,
     });
+
   } catch (err) {
     console.log('Ooops: ', err);
     yield put({ type: FAILURE_POSTS });
@@ -146,6 +151,21 @@ function* deleteComment({id}){
       comment,
       qtdComments : Object.keys(qtdComments).length - 1
     });
+    yield put(hideLoading());
+  } catch (err) {
+    yield put(hideLoading());
+    console.log('Ooops: ', err);
+  }
+}
+
+function* listByCategory({category}){
+  try {
+    yield put(showLoading());
+    const posts = yield call(PostsAPI.getPostsByCategories,  category.category)
+    yield put({
+      type: SUCCESS_LIST_BY_CATEGORY,
+      posts: getIdAsIndex(posts),
+    })
     yield put(hideLoading());
   } catch (err) {
     yield put(hideLoading());

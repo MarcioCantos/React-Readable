@@ -1,17 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createSelector } from 'reselect'
 import { sortList } from '../utils/helpers'
 //actions creators
-import { sortPosts } from '../actions/posts';
+import { requestPostsList, sortPosts, listByCategory } from '../actions/posts';
 import Post from './posts';
 
 
 function Dashboard(props) {
   const [column, setColumn] = useState('');
-  const { postIds, order, sortList } = props;
-    
+  const { postIds, order,  match, getAll, sortList, listByCategory } = props;
+
+  console.log(props)
+  
+
+  useEffect(()=>{
+    if(Object.keys(match.params).length !== 0) {
+      listByCategory(match.params);
+    } else {
+      getAll();
+    }
+  },[match.params.category])
+
   const toggleOrder = (c) => {
     const sort = (column === c) ? !order : true ;
     setColumn(c);
@@ -59,7 +70,9 @@ const mapStateToProps = (store) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    sortList : bindActionCreators(sortPosts, dispatch)
+    getAll : bindActionCreators(requestPostsList, dispatch),
+    sortList : bindActionCreators(sortPosts, dispatch),
+    listByCategory : bindActionCreators(listByCategory, dispatch),
   };
 }
 

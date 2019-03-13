@@ -42,10 +42,10 @@ const NewComment = ({parentId, addcomments}) => {
         </div>
     )
 }
-const mapStateToProps = (store, parentId) => {
-    console.log('STORE COMMENT PAGE: ', store);
-    return { parentId }
-}
+// const mapStateToProps = (store, parentId) => {
+//     console.log('STORE COMMENT PAGE: ', store);
+//     return { parentId }
+// }
 
 const mapDispatchToProps = dispatch => ({
     addcomments : bindActionCreators(addComments, dispatch)

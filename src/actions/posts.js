@@ -4,6 +4,7 @@ import {
   ADD_POST,
   DELETE_POST,
   RATE_POST,
+  LIST_BY_CATEGORY,
 } from './const'
 
 export function requestPostsList(){
@@ -39,5 +40,12 @@ export function sortPosts(param, order){
     type : SORT_POST_BY,
     column : param,
     order,
+  }
+}
+
+export function listByCategory(category){
+  return {
+    type : LIST_BY_CATEGORY,
+    category,
   }
 }

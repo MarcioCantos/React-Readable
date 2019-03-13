@@ -51,10 +51,10 @@ const Post = ({post, commentCount, onDeleteClick, history}) => {
   )
 }
 
-const updateCommentsCount = (state) => {
+// const updateCommentsCount = (state) => {
 
-  return 1;
-}
+//   return 1;
+// }
 
 const mapStateToProps = (store, {id} ) => {
   const post = store.posts.posts[id];
