@@ -1,6 +1,7 @@
 import {
   REQUEST_COMMENTS_BY_POST,
   ADD_COMMENT,
+  UPDATE_COMMENT,
   DELETE_COMMENT,
   RATE_COMMENT,
 } from './const'
@@ -17,6 +18,14 @@ export function addComments(comment, parentId){
     type : ADD_COMMENT,
     comment,
     parentId,
+  }
+}
+
+export function updateComment({id, body}){
+  return {
+    type : UPDATE_COMMENT,
+    id,
+    body,
   }
 }
 

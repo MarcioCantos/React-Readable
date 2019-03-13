@@ -4,6 +4,7 @@ import {
   FAILURE_POSTS,
   SORT_POST_BY,
   SUCCESS_ADD_POST,
+  SUCCESS_UPDATE_POST,
   SUCCESS_DELETE_POST,
   SUCCESS_RATING_POST,
   SUCCESS_LIST_BY_CATEGORY,
@@ -31,15 +32,17 @@ export default function posts(state = INITIAL_STATE, action) {
       };
 
     case SUCCESS_ADD_POST :
+    case SUCCESS_UPDATE_POST:
       return {
         ...state,
         posts: {...state.posts, [action.post.id]: action.post}
-      };
+      };     
     
     case SUCCESS_DELETE_POST :
       //ES7 Object Rest Spread operator
       const { [action.post.id]:post, ...posts} = state.posts
-      return { posts, order : false, };
+      console.log('reducer delete post: ', posts)
+      return {  ...state, posts, order: false };
 
     case SUCCESS_RATING_POST :
       return {
@@ -64,7 +67,7 @@ export default function posts(state = INITIAL_STATE, action) {
         posts: action.posts, 
         order : false, 
         error: false
-      }
+      };
 
     default :
     return state;

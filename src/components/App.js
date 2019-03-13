@@ -11,16 +11,14 @@ import NewPost from './posts/NewPost';
 import PostPage from './posts/PostPage';
 import Nav from './shared/Nav';
 
-const App = ({posts}) => {
+const App = ({loadingBar}) => {
  
-
-  const{loading} = posts
   return (
     <Router>
       <Fragment>
         <LoadingBar />
         <Nav />
-        {loading === true
+        {loadingBar === 1
         ? null
         : <div>              
             <Route path='/' exact component={Dashboard} />
@@ -38,9 +36,9 @@ const App = ({posts}) => {
 }
 
 
-const mapStateToProps = ({posts}) => {
+const mapStateToProps = ({loadingBar}) => {
   return {
-    posts,
+    loadingBar,
   };
 };
 

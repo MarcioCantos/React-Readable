@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { NavLink, withRouter } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux';
 
 class Nav extends Component {
@@ -15,7 +15,7 @@ class Nav extends Component {
             </NavLink>
           </li>
           <li>
-            <NavLink to='/new' activeClassName='active'>
+            <NavLink to='/new' exact activeClassName='active'>
               New Post
             </NavLink>
           </li>
@@ -38,4 +38,4 @@ const mapStateToProps = (store) => {
   return {categories : store.posts.categories};
 }
 
-export default withRouter(connect(mapStateToProps)(Nav))
+export default connect(mapStateToProps)(Nav)

@@ -2,6 +2,7 @@ import {
   REQUEST_POSTS,
   SORT_POST_BY,
   ADD_POST,
+  UPDATE_POST,
   DELETE_POST,
   RATE_POST,
   LIST_BY_CATEGORY,
@@ -17,6 +18,15 @@ export function addPost(post){
   return {
     type : ADD_POST,
     post,
+  }
+}
+
+export function updatePost({id, title, body}){
+  return {
+    type : UPDATE_POST,
+    id,
+    title,
+    body,
   }
 }
 

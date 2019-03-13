@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { ratePost } from '../../actions/posts'
 
-const Rating = ({id, vote, ratePost}) => {
+const Rating = ({values}) => {
   const [voteUp, setVoteUp] = useState(false);
   const [voteDown, setVoteDown] = useState(false);
+  const {id, vote, setRate} = values;
  
   const handleVoteDown = (rate) => {
     setVoteDown(rate)
@@ -21,22 +21,26 @@ const Rating = ({id, vote, ratePost}) => {
   }
 
   const submitRatePost = (rate) => {
-    ratePost(id, rate)
+    setRate(id, rate)
+  }
+
+  const showScore = () => {
+    return (
+      <div>
+        {voteUp && vote }
+        {voteDown && vote }
+        {voteUp || voteDown ? "" : vote }
+      </div>
+    )
   }
 
   return (
     <div>
       <button onClick={() => handleVoteDown(!voteDown)}>-</button>
-      {voteUp && vote }
-      {voteDown && vote }
-      {voteUp || voteDown ? "" : vote }
+        {showScore()}
       <button onClick={() => handleVoteUp(!voteUp)}>+</button>
     </div>
   )
 }
 
-const mapStateToProps = (store, {id}) => {
-  return {vote : store.posts.posts[id].voteScore}
-}
-
-export default connect(mapStateToProps, {ratePost})(Rating);
+export default Rating;

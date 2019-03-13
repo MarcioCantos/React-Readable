@@ -1,16 +1,22 @@
 import React, {Fragment} from 'react';
-import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { timeSince } from '../../utils/helpers';
-import { deletePost } from '../../actions/posts';
+import { deletePost, ratePost } from '../../actions/posts';
 import Rating from '../shared/Rating';
-// import CommentsList from './CommentsList';
 
-const Post = ({post, commentCount, onDeleteClick, history}) => {
+const Post = ({post, commentCount, history, setRate, onDeleteClick}) => {
 
   const toCategory = (e, category) => {
     e.preventDefault();
     history.push(`/category/${category}`)
+  }
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    console.log('delete post')
+    onDeleteClick(post.id);
   }
 
   return (
@@ -41,9 +47,13 @@ const Post = ({post, commentCount, onDeleteClick, history}) => {
               timestamp: {timeSince(post.timestamp)}
             </p>
           </Link>      
-          <Rating id={post.id}/>
+          <Rating values={{
+            id : post.id,
+            vote : post.voteScore,
+            setRate : setRate,
+          }} />
           <div>
-            <button onClick={() => onDeleteClick(post.id)}>Delete</button>
+            <button onClick={handleDelete}>Delete</button>
           </div>
         </div>
       }
@@ -67,6 +77,14 @@ const mapStateToProps = (store, {id} ) => {
     commentCount : commentCount,
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onDeleteClick: bindActionCreators(deletePost, dispatch),
+    setRate: bindActionCreators(ratePost, dispatch),
+  }
+}
+
 export default withRouter(
-  connect(mapStateToProps, {onDeleteClick: deletePost})(Post)
+  connect(mapStateToProps, mapDispatchToProps)(Post)
 );

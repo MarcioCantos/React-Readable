@@ -5,6 +5,7 @@ import {
     SUCCESS_ADD_COMMENT,
     SUCCESS_DELETE_COMMENT,
     SUCCESS_RATING_COMMENT,
+    SUCCESS_UPDATE_COMMENT,
   } from '../actions/const';
 
   
@@ -39,7 +40,15 @@ export default function posts(state = INITIAL_STATE, action) {
                     ...state.comments, [id] : action.comment
                 },
                 qtdComments: action.qtdComments,
-            }
+            };
+        
+        case SUCCESS_UPDATE_COMMENT :
+            return {
+                ...state, 
+                comments : {
+                    ...state.comments, [action.comment.id] : action.comment
+                }
+            };
         
         case SUCCESS_DELETE_COMMENT :
 

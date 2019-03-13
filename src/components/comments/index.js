@@ -1,8 +1,10 @@
 import React, {Fragment} from 'react';
 import { connect } from 'react-redux';
-import { deleteComment } from '../../actions/comments';
+import { bindActionCreators } from 'redux';
+import { deleteComment, rateComment } from '../../actions/comments';
+import Rating from '../shared/Rating';
 
-const Comment = ({comment, onDeleteClick}) => {
+const Comment = ({comment, setRate, onDeleteClick}) => {
     const {id, author, body, voteScore} = comment;
     return (
         <Fragment>
@@ -14,8 +16,12 @@ const Comment = ({comment, onDeleteClick}) => {
                         {body}
                     </p>
                     <p>
-                        {voteScore}
                     </p>
+                    <Rating values={{
+                        id,
+                        vote : voteScore,
+                        setRate : setRate,
+                    }} />
                     <button onClick={() => onDeleteClick(id)}>Delete</button>
                 </div>
 
@@ -29,4 +35,11 @@ const mapStateToProps = ({comments}, {id}) => {
     }
 }
 
-export default connect(mapStateToProps,{onDeleteClick: deleteComment})(Comment);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onDeleteClick: bindActionCreators(deleteComment, dispatch),
+        setRate: bindActionCreators(rateComment, dispatch),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Comment);
