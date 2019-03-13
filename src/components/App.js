@@ -22,9 +22,6 @@ const App = ({loadingBar}) => {
         ? null
         : <div>              
             <Route path='/' exact component={Dashboard} />
-            {/* {categories.map(c => 
-              <Route key={c.name} path={`/:${c.name}`} exact component={Dashboard} />
-            )} */}
             <Route path='/post/:id' component={PostPage} />
             <Route path='/new' component={NewPost} />
             <Route path='/category/:category' exact component={Dashboard} />
@@ -41,12 +38,5 @@ const mapStateToProps = ({loadingBar}) => {
     loadingBar,
   };
 };
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     getPost : bindActionCreators(requestPostsList, dispatch),    
-//     listByCategory : bindActionCreators(listByCategory, dispatch),
-//   };
-// }
 
 export default connect(mapStateToProps)(App)

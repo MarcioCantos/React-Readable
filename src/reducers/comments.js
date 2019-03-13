@@ -6,6 +6,7 @@ import {
     SUCCESS_DELETE_COMMENT,
     SUCCESS_RATING_COMMENT,
     SUCCESS_UPDATE_COMMENT,
+    SUCCESS_DELETE_ALL_COMMENTS,
   } from '../actions/const';
 
   
@@ -52,15 +53,16 @@ export default function posts(state = INITIAL_STATE, action) {
         
         case SUCCESS_DELETE_COMMENT :
 
-            console.log('SUCCESS REMOVE COMMENT - STATE: ', action.qtdComments)
-
-            //ES7 Object Rest Spread operator
+        //ES7 Object Rest Spread operator
             const { [action.comment.id]:comment, ...comments} = state.comments;
 
             return { 
                 comments,
                 qtdComments: action.qtdComments,             
             };
+        
+        case SUCCESS_DELETE_ALL_COMMENTS :
+            return { ...state, comments : {}}
 
         case SUCCESS_RATING_COMMENT :
             return {

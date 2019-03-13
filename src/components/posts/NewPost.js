@@ -1,14 +1,19 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Redirect } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { addPost } from '../../actions/posts';
+import { addPost, listAllCategory } from '../../actions/posts';
 import { useFormImput } from '../../utils/useFields';
 import { resetFields } from '../../utils/helpers';
 
 function NewPost(props){   
     const [toHome, setToHome] = useState(false);
 
+    useEffect(()=> {
+        props.listCategory();
+    }, []);
+
+    console.log('categorias em new post: ', props.categories)
     //set hooks for managing form fields
     const title = useFormImput('')
     const body = useFormImput('')
@@ -36,10 +41,24 @@ function NewPost(props){
                     {...author}
                     placeholder="Author"
                 />
-                <input
+                {/* <input
                     {...category}
                     placeholder="category"
-                />
+                /> */}
+                {/* <select value={shelf} onChange={e => handleChange(e.target.value)}>
+                    <option value="move" disabled>Move to...</option>
+                    <option value="currentlyReading">Currently Reading</option>
+                    <option value="wantToRead">Want to Read</option>
+                    <option value="read">Read</option>
+                    <option value="none">None</option>
+                </select> */}
+                <select {...category}>
+                    <option value="black" disabled>Categoria</option>
+                    {props.categories.map(c => (
+                        <option key={c.name} value={c.name}>{c.name}</option>
+                        )
+                    )}
+                </select>
                 <input
                     {...title}
                     placeholder="Title"
@@ -62,6 +81,15 @@ function NewPost(props){
 
 }
 
-const mapDispatchToProps = dispatch => ({addPost : bindActionCreators(addPost, dispatch)})
+const mapStateToProps = (store) => {
+    return {categories : store.posts.categories};
+}
 
-export default connect(null, mapDispatchToProps)(NewPost);
+const mapDispatchToProps = dispatch => {
+    return {
+        addPost : bindActionCreators(addPost, dispatch),
+        listCategory : bindActionCreators(listAllCategory, dispatch),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewPost);

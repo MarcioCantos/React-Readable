@@ -23,6 +23,9 @@ import {
   SUCCESS_RATING_COMMENT,
   LIST_BY_CATEGORY,
   SUCCESS_LIST_BY_CATEGORY,
+  SUCCESS_DELETE_ALL_COMMENTS,
+  REQUEST_CATEGORIES,
+  SUCCESS_REQUEST_CATEGORIES,
 } from '../../actions/const'
 import { takeLatest, all, takeEvery, put, call, select } from 'redux-saga/effects';
 import * as PostsAPI from '../../utils/apis/PostsAPI';
@@ -41,6 +44,7 @@ export default function* root(){
   yield takeLatest(UPDATE_COMMENT, updateComment);
   yield takeLatest(DELETE_COMMENT, deleteComment);
   yield takeLatest(RATE_COMMENT, ratingComment);
+  yield takeLatest(REQUEST_CATEGORIES, getAllCategories);
   yield takeLatest(LIST_BY_CATEGORY, listByCategory);
 }
 
@@ -123,11 +127,19 @@ function* updatePost({id, title, body}){
   }
 }
 
-function* deletePost({id}){
+function* deletePost({id, comments}){
   try {
+
     yield put(showLoading());
+
+    const comments = yield select(state => state.comments);
+    yield Object.keys(comments).map(comment => call(PostsAPI.deleteComment, comment.id));
+
     const post = yield call(PostsAPI.deletePost, id);
+
     yield put({ type: SUCCESS_DELETE_POST, post});
+    yield put({ type : SUCCESS_DELETE_ALL_COMMENTS });
+
     yield put(hideLoading());
   } catch (err) {
     yield put(hideLoading());
@@ -216,6 +228,19 @@ function* ratingComment({id, vote}){
 }
 
   /** CATEGORY */
+
+function* getAllCategories(){
+  try {
+    yield put(showLoading());
+    const categories = yield call(PostsAPI.getCategories);
+    yield put({ type: SUCCESS_REQUEST_CATEGORIES, categories});
+    yield put(hideLoading());
+  } catch (err) {
+    yield put(hideLoading());
+    console.log('Ooops: ', err);
+  }
+}
+
 function* listByCategory({category}){
   try {
     yield put(showLoading());

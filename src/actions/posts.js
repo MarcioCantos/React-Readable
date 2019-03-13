@@ -5,6 +5,7 @@ import {
   UPDATE_POST,
   DELETE_POST,
   RATE_POST,
+  REQUEST_CATEGORIES,
   LIST_BY_CATEGORY,
 } from './const'
 
@@ -30,10 +31,11 @@ export function updatePost({id, title, body}){
   }
 }
 
-export function deletePost(id){
+export function deletePost(id, comments){
   return {
     type : DELETE_POST,
     id,
+    comments,
   }
 }
 
@@ -50,6 +52,12 @@ export function sortPosts(param, order){
     type : SORT_POST_BY,
     column : param,
     order,
+  }
+}
+
+export function listAllCategory(){
+  return {
+    type : REQUEST_CATEGORIES,
   }
 }
 

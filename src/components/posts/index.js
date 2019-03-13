@@ -18,11 +18,11 @@ const Post = ({post, commentCount, history, setRate, onDeleteClick}) => {
     console.log('delete post')
     onDeleteClick(post.id);
   }
-
+  console.log('history in post component: ', history)
   return (
     <Fragment>
       {post === undefined 
-      ? 'null'
+      ? history.push('/')
       : <div>
           <Link to={`/post/${post.id}`}> 
             <p>

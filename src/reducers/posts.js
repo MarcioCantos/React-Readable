@@ -7,6 +7,7 @@ import {
   SUCCESS_UPDATE_POST,
   SUCCESS_DELETE_POST,
   SUCCESS_RATING_POST,
+  SUCCESS_REQUEST_CATEGORIES,
   SUCCESS_LIST_BY_CATEGORY,
 } from '../actions/const'
 
@@ -40,9 +41,11 @@ export default function posts(state = INITIAL_STATE, action) {
     
     case SUCCESS_DELETE_POST :
       //ES7 Object Rest Spread operator
-      const { [action.post.id]:post, ...posts} = state.posts
-      console.log('reducer delete post: ', posts)
-      return {  ...state, posts, order: false };
+      const { [action.post.id]:post, ...posts} = state.posts;
+      
+      return {  
+        ...state,
+        posts, order: false };
 
     case SUCCESS_RATING_POST :
       return {
@@ -57,6 +60,9 @@ export default function posts(state = INITIAL_STATE, action) {
 
     case SORT_POST_BY :
       return {...state, column: action.column, order: action.order};
+
+    case SUCCESS_REQUEST_CATEGORIES :
+      return {...state, categories : action.categories.categories};
 
     case SUCCESS_LIST_BY_CATEGORY :      
       //ES7 Object Rest Spread operator
