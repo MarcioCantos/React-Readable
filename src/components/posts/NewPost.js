@@ -2,9 +2,17 @@ import React, {useState, useEffect} from 'react';
 import { Redirect } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+//API
 import { addPost, listAllCategory } from '../../actions/posts';
+//Form Components
+import Input from '../FormComponents/Input';
+import Select from '../FormComponents/Select';
+import TextArea from '../FormComponents/TextArea';
+import Button from '../FormComponents/Button';
+//Components
 import { useFormImput } from '../../utils/useFields';
 import { resetFields } from '../../utils/helpers';
+
 
 function NewPost(props){   
     const [toHome, setToHome] = useState(false);
@@ -13,12 +21,11 @@ function NewPost(props){
         props.listCategory();
     }, []);
 
-    console.log('categorias em new post: ', props.categories)
     //set hooks for managing form fields
-    const title = useFormImput('')
-    const body = useFormImput('')
-    const author = useFormImput('')
-    const category = useFormImput('')
+    const title = useFormImput('');
+    const body = useFormImput('');
+    const author = useFormImput('');
+    const category = useFormImput('');
     
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -27,9 +34,9 @@ function NewPost(props){
             body: body.value,
             author : author.value,
             category : category.value,
-         });
-         resetFields(title, body, author, category);
-         setToHome(true);
+        });
+        resetFields(title, body, author, category);
+        setToHome(true);
     }  
     
     return (
@@ -37,9 +44,43 @@ function NewPost(props){
             {toHome && <Redirect to='/' />}
             <h3>Compose New Post</h3>
             <form onSubmit={handleSubmit}>
-                <input
+                {/* <input
                     {...author}
                     placeholder="Author"
+                /> */}
+                <Input 
+                    {...title}
+                    title={'Lets Talk About:'}
+                    placeholder={'I would like to talk...'}
+                />
+                <TextArea 
+                    {...body}
+                    title={"Whats Matter:"}
+                    placeholder={'What you are thinking goes here.'}
+                    rows={10}
+                />
+                <Select
+                    {...category}
+                    title={'The subject will be:'}
+                    options={props.categories}
+                    placeholder={'The subject is...'}
+                />
+                <Input 
+                    {...author}
+                    title={'Name'}
+                    placeholder={'Author Name'}
+                />
+                <Button
+                    action={this.handleFormSubmit}
+                    type={"primary"}
+                    title={"Submit Post"}
+                    style={buttonStyle}
+                />
+                <Button
+                    action={this.handleClearForm}
+                    type={"secondary"}
+                    title={"Clear"}
+                    style={buttonStyle}
                 />
                 {/* <input
                     {...category}
@@ -51,7 +92,7 @@ function NewPost(props){
                     <option value="wantToRead">Want to Read</option>
                     <option value="read">Read</option>
                     <option value="none">None</option>
-                </select> */}
+                </select> 
                 <select {...category}>
                     <option value="black" disabled>Categoria</option>
                     {props.categories.map(c => (
@@ -73,12 +114,12 @@ function NewPost(props){
                     className='btn'
                     type='submit'
                     disabled={body.value === ''}>
-                        Submit
+                        Submit Post
                 </button>
+                */}
             </form>
         </div>
     );
-
 }
 
 const mapStateToProps = (store) => {
@@ -93,3 +134,7 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewPost);
+
+const buttonStyle = {
+    margin: "10px 10px 10px 10px"
+};
