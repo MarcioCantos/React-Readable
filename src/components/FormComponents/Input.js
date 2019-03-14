@@ -3,7 +3,7 @@ import React from 'react';
 const Input = (props) => {
     return (
         <div className="form-group">
-            <label for={props.name} className="form-label">
+            {/* <label for={props.name} className="form-label">
                 {props.title}
             </label>
             <input
@@ -15,7 +15,7 @@ const Input = (props) => {
                 onChange={props.handleChange}
                 placeholder={props.placeholder}
                 {...props}
-            />
+            /> */}
         </div>
     );
 }

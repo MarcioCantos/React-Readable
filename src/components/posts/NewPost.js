@@ -35,9 +35,12 @@ function NewPost(props){
             author : author.value,
             category : category.value,
         });
-        resetFields(title, body, author, category);
+        handleClearForm(title, body, author, category);
         setToHome(true);
-    }  
+    }
+    const handleClearForm = (...args) => {
+        resetFields(...args)
+    }
     
     return (
         <div>
@@ -50,34 +53,38 @@ function NewPost(props){
                 /> */}
                 <Input 
                     {...title}
+                    name={'title'}
                     title={'Lets Talk About:'}
                     placeholder={'I would like to talk...'}
                 />
                 <TextArea 
                     {...body}
                     title={"Whats Matter:"}
+                    name={'message'}
                     placeholder={'What you are thinking goes here.'}
                     rows={10}
                 />
                 <Select
                     {...category}
+                    name={'category'}
                     title={'The subject will be:'}
                     options={props.categories}
                     placeholder={'The subject is...'}
                 />
                 <Input 
                     {...author}
+                    name={'author'}
                     title={'Name'}
                     placeholder={'Author Name'}
                 />
                 <Button
-                    action={this.handleFormSubmit}
+                    action={handleSubmit}
                     type={"primary"}
                     title={"Submit Post"}
                     style={buttonStyle}
                 />
                 <Button
-                    action={this.handleClearForm}
+                    action={handleClearForm}
                     type={"secondary"}
                     title={"Clear"}
                     style={buttonStyle}
@@ -86,13 +93,7 @@ function NewPost(props){
                     {...category}
                     placeholder="category"
                 /> */}
-                {/* <select value={shelf} onChange={e => handleChange(e.target.value)}>
-                    <option value="move" disabled>Move to...</option>
-                    <option value="currentlyReading">Currently Reading</option>
-                    <option value="wantToRead">Want to Read</option>
-                    <option value="read">Read</option>
-                    <option value="none">None</option>
-                </select> 
+                {/* 
                 <select {...category}>
                     <option value="black" disabled>Categoria</option>
                     {props.categories.map(c => (

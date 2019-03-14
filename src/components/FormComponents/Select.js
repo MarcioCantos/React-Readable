@@ -1,8 +1,9 @@
 import React from 'react';
 
 const Select = (props) => {
+    console.log('Estou no select:', props)
     return (
-        <div className="form-group">
+        <div className="form-group" key={props.options}>
             <label for={props.name}> {props.title} </label>
             <select
                 id={props.name}
