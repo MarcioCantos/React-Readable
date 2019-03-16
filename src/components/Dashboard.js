@@ -3,31 +3,43 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createSelector } from 'reselect'
 import { sortList } from '../utils/helpers'
+import './styles.css'
+//Bootstrap
+import Button from 'react-bootstrap/Button'
 //actions creators
 import { requestPostsList, sortPosts, listByCategory } from '../actions/posts';
+//components
 import Post from './posts';
+import NewPost from './posts/NewPost';
+// import ModalWindows from './shared/Modal/ModalWindow'
+import Modal from './shared/Modal'
 
 
 function Dashboard(props) {
   const [column, setColumn] = useState('');
-  const { postIds, order,  match, getAll, sortList, listByCategory } = props;
-
-  console.log(props)
+  const [modalShow, setModalShow] = useState(false);
+  const { postIds, order,  match, getAll, sortList, listByCategory, categories } = props;
+  console.log('props em dashboard: ', props)
   
-
+  //Load Posts by Categories or load all
   useEffect(()=>{
-    if(Object.keys(match.params).length !== 0) {
+    const params = Object.keys(match.params)
+    if(params.length !== 0) {
       listByCategory(match.params);
     } else {
       getAll();
     }
   },[match.params.category])
 
+  //Sorting Columns
   const toggleOrder = (c) => {
     const sort = (column === c) ? !order : true ;
     setColumn(c);
     sortList(c, sort);
-  }    
+  }  
+  
+  //Modal - Close
+  const closeModal = () => setModalShow(false);
 
   return(
     <div>        
@@ -35,6 +47,43 @@ function Dashboard(props) {
       <button onClick={() => toggleOrder('timestamp')}>Order by Date</button>
       <button onClick={() => toggleOrder('voteScore')}>Order by Vote Score</button>
       <button onClick={() => toggleOrder('commentCount')}>Order by Comment Count</button>
+      
+      {/** Modal Button */}
+      <Button
+          variant="primary"
+          onClick={() => setModalShow(true)}
+          className="addNew"
+        >
+          Add Post
+        </Button>
+      
+      {
+        /**
+         * @inner recebe o Componente que será exibido dentro do Modal
+         * @show e @onHide devem ser criados no componente que conteŕa o modal e passado como props
+         * @title título que será exibido quando o componente for exibido ao usuário
+         * Qualquer outro props que for passado será "enviado" ao @inner como props.
+         */
+      }
+      <Modal 
+        inner={NewPost} 
+        show={modalShow}
+        onHide={closeModal}
+        title='Add New Post'
+        categories={categories}        
+      />
+
+      {/* <ModalWindows
+        show={modalShow}
+        onHide={closeModal}
+        title='Add New Post'
+      >
+        <NewPost 
+          categories={categories}
+          onHide={closeModal}
+        />
+      </ModalWindows> */}
+
       <ul>
         { postIds.map((id) => (
           <li key={id}>
@@ -59,9 +108,11 @@ const sortingList = createSelector(
 );
 
 const mapStateToProps = (store) => {
-  const {posts, column, order } = store.posts
+  const {categories, posts, column, order } = store.posts
   const initialList = Object.keys(posts).map(id => id);
+  
   return {
+    categories,
     posts,
     order,
     postIds : column === undefined ? initialList : sortingList(store.posts),

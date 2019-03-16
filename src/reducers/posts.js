@@ -1,6 +1,6 @@
 import {
-  REQUEST_POSTS,
   SUCCESS_POSTS,
+  SUCCESS_SINGLE_POST,
   FAILURE_POSTS,
   SORT_POST_BY,
   SUCCESS_ADD_POST,
@@ -21,17 +21,21 @@ const INITIAL_STATE = {
 export default function posts(state = INITIAL_STATE, action) {
   switch(action.type) {
 
-    case REQUEST_POSTS :
-      return { ...state };
+    // case REQUEST_POSTS :
+    //   return { ...state };
 
+    
     case FAILURE_POSTS :
-        return {data: [], error: true};
-
+    return {data: [], error: true};
+    
     case SUCCESS_POSTS :
-      return {
-        posts: action.posts, categories: action.categories, order : false, error: false
-      };
-
+    return {
+      posts: action.posts, categories: action.categories, order : false, error: false
+    };
+    
+    case SUCCESS_SINGLE_POST :
+    return {...state, post: action.post};
+    
     case SUCCESS_ADD_POST :
     case SUCCESS_UPDATE_POST:
       return {

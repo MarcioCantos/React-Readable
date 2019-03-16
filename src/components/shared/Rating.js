@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 
 const Rating = ({values}) => {
   const [voteUp, setVoteUp] = useState(false);

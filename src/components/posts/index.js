@@ -1,12 +1,18 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useState} from 'react';
 import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { timeSince } from '../../utils/helpers';
 import { deletePost, ratePost } from '../../actions/posts';
+import NewPost from './NewPost'
 import Rating from '../shared/Rating';
+import Modal from '../shared/Modal'
 
-const Post = ({post, commentCount, history, setRate, onDeleteClick}) => {
+const Post = ({post, categories, commentCount, history, setRate, onDeleteClick}) => {
+  const [modalShow, setModalShow] = useState(false);
+
+  //Modal - Close
+  const closeModal = () => setModalShow(false);
 
   const toCategory = (e, category) => {
     e.preventDefault();
@@ -18,7 +24,7 @@ const Post = ({post, commentCount, history, setRate, onDeleteClick}) => {
     console.log('delete post')
     onDeleteClick(post.id);
   }
-  console.log('history in post component: ', history)
+
   return (
     <Fragment>
       {post === undefined 
@@ -53,26 +59,32 @@ const Post = ({post, commentCount, history, setRate, onDeleteClick}) => {
             setRate : setRate,
           }} />
           <div>
+            <button onClick={() => setModalShow(true)}>Editar</button>
             <button onClick={handleDelete}>Delete</button>
           </div>
+          <Modal 
+            inner={NewPost} 
+            show={modalShow}
+            onHide={closeModal}
+            title='Editing Post...'
+            post={post}
+            categories={categories}        
+          />        
         </div>
       }
     </Fragment>
   )
 }
 
-// const updateCommentsCount = (state) => {
-
-//   return 1;
-// }
-
 const mapStateToProps = (store, {id} ) => {
   const post = store.posts.posts[id];
+  const categories = store.posts.categories;
   const loading = store.posts.loading;
   const commentCount = store.comments.qtdComments;
   
   return {
     post,
+    categories,
     loading,
     commentCount : commentCount,
   }

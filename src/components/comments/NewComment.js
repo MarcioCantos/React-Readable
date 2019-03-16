@@ -4,8 +4,14 @@ import { bindActionCreators } from 'redux';
 import { useFormImput } from '../../utils/useFields';
 import { resetFields } from '../../utils/helpers';
 import { addComments } from '../../actions/comments'
+//Form Components
+import Input from '../FormComponents/Input';
+import TextArea from '../FormComponents/TextArea';
+import Button from '../FormComponents/Button';
 
-const NewComment = ({parentId, addcomments}) => {
+const NewComment = (props) => {
+
+    const {parentId, addcomments} = props
 
     const author = useFormImput('');
     const body = useFormImput('');
@@ -16,28 +22,45 @@ const NewComment = ({parentId, addcomments}) => {
             author: author.value,
             body: body.value,            
         }, parentId);       
-        resetFields(author, body);
+        handleClearForm(e);
+    }
+
+    const handleClearForm = (e) => {
+        e.preventDefault();
+
+        const params = { author, body }
+        resetFields(params)
     }
    
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-                <input 
-                    {...author} 
-                    placeholder='Author'
-                />
-                <textarea 
+            <form onSubmit={handleSubmit}>                
+            
+                <TextArea 
                     {...body}
-                    placeholder="What I'm thinking right now..."
-                    className='textarea'
-                    maxLength={280}
+                    title={"Whats Matter:"}
+                    name={'message'}
+                    placeholder={'What you are thinking goes here.'}
+                    rows={10}
+                />               
+                <Input 
+                    {...author}
+                    name={'author'}
+                    title={'Name'}
+                    placeholder={'Author Name'}
                 />
-                <button
-                    className='btn'
-                    type='submit'
-                    disabled={body.value === ''}>
-                        Submit
-                </button>
+                <Button
+                    action={handleSubmit}
+                    type={"primary"}
+                    title={"Submit Post"}
+                    style={buttonStyle}
+                />
+                <Button
+                    action={handleClearForm}
+                    type={"secondary"}
+                    title={"Clear"}
+                    style={buttonStyle}
+                />
             </form>
         </div>
     )
@@ -52,3 +75,7 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default connect(null, mapDispatchToProps)(NewComment);
+
+const buttonStyle = {
+    margin: "10px 10px 10px 10px"
+};

@@ -1,5 +1,6 @@
 import {
   REQUEST_POSTS,
+  REQUEST_SINGLE_POST,
   SUCCESS_POSTS,
   FAILURE_POSTS,
   ADD_POST,
@@ -26,6 +27,7 @@ import {
   SUCCESS_DELETE_ALL_COMMENTS,
   REQUEST_CATEGORIES,
   SUCCESS_REQUEST_CATEGORIES,
+  SUCCESS_SINGLE_POST,
 } from '../../actions/const'
 import { takeLatest, all, takeEvery, put, call, select } from 'redux-saga/effects';
 import * as PostsAPI from '../../utils/apis/PostsAPI';
@@ -35,6 +37,7 @@ import { showLoading, hideLoading } from 'react-redux-loading';
 
 export default function* root(){
   yield takeLatest(REQUEST_POSTS, requestAllPosts);
+  yield takeLatest(REQUEST_SINGLE_POST, requestSinglePost)
   yield takeLatest(ADD_POST, addNewPost);
   yield takeLatest(UPDATE_POST, updatePost);
   yield takeLatest(DELETE_POST, deletePost);
@@ -51,9 +54,7 @@ export default function* root(){
 
 function* requestAllPosts() {
   try {
-
     yield put(showLoading());
-
     //get Posts and Categories from PostsAPI
     const [posts, categories] = yield all([
       call(PostsAPI.getAll),
@@ -74,7 +75,20 @@ function* requestAllPosts() {
     yield put(hideLoading());
   }
 }
-  
+
+function* requestSinglePost({id}) {  
+  try {
+    yield put(showLoading());
+    const post = yield call(PostsAPI.getPostById, id);
+    yield put({ type: SUCCESS_SINGLE_POST, post });
+    yield put(hideLoading());
+  } catch (err) {
+    console.log('Ooops: ', err);
+    yield put({ type: FAILURE_POSTS });
+    yield put(hideLoading());
+  }
+}
+
 
   /** POSTS */
 
@@ -97,52 +111,41 @@ function* requestAllCommentsByPost({id}){
 
 function* addNewPost({post}){
   try {    
-    yield put(showLoading());
     const response = yield call(PostsAPI.addPost, formatPost(post));
     yield put({
       type : SUCCESS_ADD_POST,
       post : response,
     });
-    yield put(hideLoading());
   } catch (err) {
     console.log('Ooops: ', err);
-    yield put(hideLoading());
     yield put({ type: FAILURE });
   }
 }
 
 function* updatePost({id, title, body}){
   try {
-    yield put(showLoading());
-    const response = yield call(PostsAPI.updatePost({id, title, body}))
+    const response = yield call(PostsAPI.updatePost,{id, title, body})
+    console.log('resposta da API: ', response)
     yield put({
       type : SUCCESS_UPDATE_POST,
       post : response,
     });
-    yield(hideLoading());
   } catch (err) {
     console.log('Ooops: ', err);
-    yield put(hideLoading());
     yield put({ type: FAILURE });
   }
 }
 
 function* deletePost({id, comments}){
   try {
-
-    yield put(showLoading());
-
     const comments = yield select(state => state.comments);
     yield Object.keys(comments).map(comment => call(PostsAPI.deleteComment, comment.id));
 
     const post = yield call(PostsAPI.deletePost, id);
-
     yield put({ type: SUCCESS_DELETE_POST, post});
     yield put({ type : SUCCESS_DELETE_ALL_COMMENTS });
 
-    yield put(hideLoading());
   } catch (err) {
-    yield put(hideLoading());
     console.log('Ooops: ', err);
   }
 }
@@ -160,15 +163,12 @@ function* ratingPost({id, vote}){
 
 function* addNewComment({comment, parentId}){
   try {
-    yield put(showLoading());
-
     //get quantity of post comments
     const qtdComments = yield select(state => state.comments.comments);
 
     const response = yield call(
       PostsAPI.addComment, formatComment({...comment, parentId}
     ));
-    yield put(hideLoading());
     yield put({
       type : SUCCESS_ADD_COMMENT,
       comment : response,
@@ -176,13 +176,11 @@ function* addNewComment({comment, parentId}){
     });
   } catch (err) {
     console.log('Ooops: ', err);
-    yield put(hideLoading());
   }
 }
 
 function* updateComment({id, body}){
   try {
-    yield put(showLoading());
     const response = yield call(
       PostsAPI.updateComment, {id, body, timestamp : Date.now()}
     );
@@ -192,14 +190,11 @@ function* updateComment({id, body}){
     })
   } catch (err) {
     console.log('Ooops: ', err);
-    yield put(hideLoading())
   }
 }
 
 function* deleteComment({id}){
   try {
-    yield put(showLoading());
-
     //get quantity of post comments
     const qtdComments = yield select(state => state.comments.comments)
 
@@ -209,14 +204,10 @@ function* deleteComment({id}){
       comment,
       qtdComments : Object.keys(qtdComments).length - 1
     });
-    yield put(hideLoading());
   } catch (err) {
-    yield put(hideLoading());
     console.log('Ooops: ', err);
   }
 }
-
-
 
 function* ratingComment({id, vote}){
   try {
@@ -231,12 +222,9 @@ function* ratingComment({id, vote}){
 
 function* getAllCategories(){
   try {
-    yield put(showLoading());
     const categories = yield call(PostsAPI.getCategories);
     yield put({ type: SUCCESS_REQUEST_CATEGORIES, categories});
-    yield put(hideLoading());
   } catch (err) {
-    yield put(hideLoading());
     console.log('Ooops: ', err);
   }
 }

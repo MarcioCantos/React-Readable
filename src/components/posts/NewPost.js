@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import { Redirect } from 'react-router-dom';
+import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-//API
-import { addPost, listAllCategory } from '../../actions/posts';
+//Action Creators
+import { addPost, updatePost } from '../../actions/posts';
 //Form Components
 import Input from '../FormComponents/Input';
 import Select from '../FormComponents/Select';
@@ -14,43 +13,41 @@ import { useFormImput } from '../../utils/useFields';
 import { resetFields } from '../../utils/helpers';
 
 
-function NewPost(props){   
-    const [toHome, setToHome] = useState(false);
-
-    useEffect(()=> {
-        props.listCategory();
-    }, []);
+function NewPost(props){
+    const {post, categories, addPost, updatePost} = props;
 
     //set hooks for managing form fields
-    const title = useFormImput('');
-    const body = useFormImput('');
-    const author = useFormImput('');
-    const category = useFormImput('');
-    
+    const title = useFormImput(post ? post.title : '');
+    const body = useFormImput(post ? post.body : '');
+    const author = useFormImput(post ? post.author : '');
+    const category = useFormImput(post ? post.category : '');
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        props.addPost({
-            title: title.value, 
-            body: body.value,
+        const holdFormsData = {
+            id : post ? post.id : null,
+            title : title.value,
+            body : body.value,
             author : author.value,
             category : category.value,
-        });
-        handleClearForm(title, body, author, category);
-        setToHome(true);
-    }
-    const handleClearForm = (...args) => {
-        resetFields(...args)
-    }
+        };
+
+        post ? updatePost(holdFormsData) : addPost(holdFormsData);
+
+        handleClearForm(e);
+        props.onHide();
+    };
+
+    const handleClearForm = (e) => {
+        e.preventDefault();
+        const params = { title, body, author, category }
+        resetFields(params)
+    };
     
     return (
         <div>
-            {toHome && <Redirect to='/' />}
-            <h3>Compose New Post</h3>
-            <form onSubmit={handleSubmit}>
-                {/* <input
-                    {...author}
-                    placeholder="Author"
-                /> */}
+            <form onSubmit={handleSubmit}>                
                 <Input 
                     {...title}
                     name={'title'}
@@ -68,7 +65,7 @@ function NewPost(props){
                     {...category}
                     name={'category'}
                     title={'The subject will be:'}
-                    options={props.categories}
+                    options={categories}
                     placeholder={'The subject is...'}
                 />
                 <Input 
@@ -81,61 +78,22 @@ function NewPost(props){
                     action={handleSubmit}
                     type={"primary"}
                     title={"Submit Post"}
-                    style={buttonStyle}
                 />
                 <Button
                     action={handleClearForm}
                     type={"secondary"}
                     title={"Clear"}
-                    style={buttonStyle}
                 />
-                {/* <input
-                    {...category}
-                    placeholder="category"
-                /> */}
-                {/* 
-                <select {...category}>
-                    <option value="black" disabled>Categoria</option>
-                    {props.categories.map(c => (
-                        <option key={c.name} value={c.name}>{c.name}</option>
-                        )
-                    )}
-                </select>
-                <input
-                    {...title}
-                    placeholder="Title"
-                />
-                <textarea 
-                    {...body}
-                    placeholder="What I'm thinking right now..."
-                    className='textarea'
-                    maxLength={280}
-                />
-                <button
-                    className='btn'
-                    type='submit'
-                    disabled={body.value === ''}>
-                        Submit Post
-                </button>
-                */}
             </form>
         </div>
     );
 }
 
-const mapStateToProps = (store) => {
-    return {categories : store.posts.categories};
-}
-
 const mapDispatchToProps = dispatch => {
     return {
         addPost : bindActionCreators(addPost, dispatch),
-        listCategory : bindActionCreators(listAllCategory, dispatch),
+        updatePost : bindActionCreators(updatePost, dispatch),
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewPost);
-
-const buttonStyle = {
-    margin: "10px 10px 10px 10px"
-};
+export default connect(null, mapDispatchToProps)(NewPost);

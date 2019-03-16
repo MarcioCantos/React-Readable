@@ -1,5 +1,6 @@
 import {
   REQUEST_POSTS,
+  REQUEST_SINGLE_POST,
   SORT_POST_BY,
   ADD_POST,
   UPDATE_POST,
@@ -15,6 +16,20 @@ export function requestPostsList(){
   }
 }
 
+export function requestSinglePost(id){
+  return {
+    type : REQUEST_SINGLE_POST,
+    id,
+  }
+}
+
+export function requestForPostEdit(id){
+  return {
+    type: 'REQUEST_POST_EDIT',
+    id,
+  }
+}
+
 export function addPost(post){
   return {
     type : ADD_POST,
@@ -22,7 +37,12 @@ export function addPost(post){
   }
 }
 
-export function updatePost({id, title, body}){
+export function updatePost(post){
+  const { id, title, body } = post;
+  console.log('recebendo no action: ');
+  console.log('ID: ', id);
+  console.log('TITLE: ', title);
+  console.log('BODY: ', body);
   return {
     type : UPDATE_POST,
     id,

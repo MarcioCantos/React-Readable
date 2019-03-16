@@ -1,24 +1,29 @@
 import React from 'react';
 
 const Select = (props) => {
-    console.log('Estou no select:', props)
+    const { edit } = props.bind;
+    let hold = props;
+    
+    if(edit && props.value === ''){
+        hold = {...props, value : edit}
+    }
+
     return (
-        <div className="form-group" key={props.options}>
-            <label for={props.name}> {props.title} </label>
+        <div className="form-group">
+            <label htmlFor={props.name}> {props.title} </label>
             <select
                 id={props.name}
                 name={props.name}
-                value={props.value}
-                onChange={props.handleChange}
                 className="form-control"
+                {...hold}
             >
-                <option value="" disabled>
+                <option defaultValue="">
                 {props.placeholder}
                 </option>
                 {props.options.map(option => {
                 return (
-                    <option key={option} value={option} label={option}>
-                    {option}
+                    <option key={option.name} value={option.name} label={option.name}>
+                    {option.name}
                     </option>
                 );
                 })}
