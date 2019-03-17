@@ -8,27 +8,31 @@ import NewPost from './NewPost'
 import Rating from '../shared/Rating';
 import Modal from '../shared/Modal'
 
-const Post = ({post, categories, commentCount, history, setRate, onDeleteClick}) => {
+const Post = ({post, categories, commentCount, history, pagePost, setRate, onDeleteClick}) => {
   const [modalShow, setModalShow] = useState(false);
 
   //Modal - Close
   const closeModal = () => setModalShow(false);
 
+  // Handle category link clicked
   const toCategory = (e, category) => {
     e.preventDefault();
     history.push(`/category/${category}`)
   }
 
-  const handleDelete = (e) => {
-    e.preventDefault();
-    console.log('delete post')
+  const handleDelete = () => {
     onDeleteClick(post.id);
+
+    // se estiver na página individual do post, irá retornar para o destino antecedente.
+    if(pagePost){
+      history.goBack();
+    }
   }
 
   return (
     <Fragment>
       {post === undefined 
-      ? history.push('/')
+      ? null
       : <div>
           <Link to={`/post/${post.id}`}> 
             <p>

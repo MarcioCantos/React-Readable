@@ -28,6 +28,9 @@ import {
   REQUEST_CATEGORIES,
   SUCCESS_REQUEST_CATEGORIES,
   SUCCESS_SINGLE_POST,
+  START_LOADING,
+  STOP_LOADING,
+  NOT_FOUND,
 } from '../../actions/const'
 import { takeLatest, all, takeEvery, put, call, select } from 'redux-saga/effects';
 import * as PostsAPI from '../../utils/apis/PostsAPI';
@@ -36,6 +39,8 @@ import { showLoading, hideLoading } from 'react-redux-loading';
 
 
 export default function* root(){
+  yield takeLatest(START_LOADING, startLoading);
+  yield takeLatest(STOP_LOADING, startLoading);
   yield takeLatest(REQUEST_POSTS, requestAllPosts);
   yield takeLatest(REQUEST_SINGLE_POST, requestSinglePost)
   yield takeLatest(ADD_POST, addNewPost);
@@ -51,111 +56,132 @@ export default function* root(){
   yield takeLatest(LIST_BY_CATEGORY, listByCategory);
 }
 
+function* startLoading(){
+  yield put(showLoading());
+}
+function* stopLoading(){
+  yield put(hideLoading());
+}
 
 function* requestAllPosts() {
   try {
-    yield put(showLoading());
+    
     //get Posts and Categories from PostsAPI
     const [posts, categories] = yield all([
       call(PostsAPI.getAll),
       call(PostsAPI.getCategories)
-    ]);
-
-    yield put(hideLoading());
-    
+    ]);    
     yield put({
       type: SUCCESS_POSTS,
       posts : getIdAsIndex(posts),
       categories: categories.categories,
     });
+    
 
   } catch (err) {
     console.log('Ooops: ', err);
     yield put({ type: FAILURE_POSTS });
-    yield put(hideLoading());
+    
   }
 }
 
 function* requestSinglePost({id}) {  
   try {
-    yield put(showLoading());
+    
     const post = yield call(PostsAPI.getPostById, id);
+
+    if(post.error){
+      yield put({ type: NOT_FOUND, errorMsg : post.error })  
+    }
     yield put({ type: SUCCESS_SINGLE_POST, post });
-    yield put(hideLoading());
+    
   } catch (err) {
     console.log('Ooops: ', err);
     yield put({ type: FAILURE_POSTS });
-    yield put(hideLoading());
+    
   }
 }
 
-
-  /** POSTS */
-
 function* requestAllCommentsByPost({id}){
   try {
-    yield put(showLoading());
+    
     const response = yield call(PostsAPI.getAllCommentsByPost, id);
     yield put({
       type: SUCCESS_LIST_COMMENTS, 
       comments: getIdAsIndex(response),
     });   
-    yield put(hideLoading());
+    
     
   } catch (err) { 
     console.log('Ooops: ', err);
     yield put({ type: FAILURE });
-    yield put(hideLoading());
+    
   }
 }
 
+  /** POSTS */
+
+
 function* addNewPost({post}){
   try {    
+    
     const response = yield call(PostsAPI.addPost, formatPost(post));
     yield put({
       type : SUCCESS_ADD_POST,
       post : response,
     });
+    
   } catch (err) {
     console.log('Ooops: ', err);
     yield put({ type: FAILURE });
+    
   }
 }
 
 function* updatePost({id, title, body}){
   try {
+    
     const response = yield call(PostsAPI.updatePost,{id, title, body})
-    console.log('resposta da API: ', response)
     yield put({
       type : SUCCESS_UPDATE_POST,
       post : response,
     });
+    
   } catch (err) {
     console.log('Ooops: ', err);
     yield put({ type: FAILURE });
+    
   }
 }
 
 function* deletePost({id, comments}){
   try {
-    const comments = yield select(state => state.comments);
-    yield Object.keys(comments).map(comment => call(PostsAPI.deleteComment, comment.id));
+    
+    const comments = yield select(state => state.comments.comments);
+    yield call(PostsAPI.deleteAllComments, Object.keys(comments))
+    // yield Object.keys(comments).map(comment => {
+    //   call(PostsAPI.deleteComment, comment.id)
+    // });
 
     const post = yield call(PostsAPI.deletePost, id);
-    yield put({ type: SUCCESS_DELETE_POST, post});
     yield put({ type : SUCCESS_DELETE_ALL_COMMENTS });
+    yield put({ type: SUCCESS_DELETE_POST, post});    
 
   } catch (err) {
     console.log('Ooops: ', err);
+    
   }
 }
 
 function* ratingPost({id, vote}){
   try {
+    
     const response = yield call(PostsAPI.addPostScore, {id, vote});
     yield put({type: SUCCESS_RATING_POST, vote : {id, vote : response.voteScore}});
+    
   } catch (err) {
     console.log('Ooops: ', err);
+    
   }
 }
 
@@ -163,6 +189,7 @@ function* ratingPost({id, vote}){
 
 function* addNewComment({comment, parentId}){
   try {
+    
     //get quantity of post comments
     const qtdComments = yield select(state => state.comments.comments);
 
@@ -174,13 +201,16 @@ function* addNewComment({comment, parentId}){
       comment : response,
       qtdComments : Object.keys(qtdComments).length + 1
     });
+    
   } catch (err) {
     console.log('Ooops: ', err);
+    
   }
 }
 
 function* updateComment({id, body}){
   try {
+    
     const response = yield call(
       PostsAPI.updateComment, {id, body, timestamp : Date.now()}
     );
@@ -188,13 +218,16 @@ function* updateComment({id, body}){
       type : SUCCESS_UPDATE_COMMENT,
       comment : response,
     })
+    
   } catch (err) {
     console.log('Ooops: ', err);
+    
   }
 }
 
 function* deleteComment({id}){
   try {
+    
     //get quantity of post comments
     const qtdComments = yield select(state => state.comments.comments)
 
@@ -204,17 +237,22 @@ function* deleteComment({id}){
       comment,
       qtdComments : Object.keys(qtdComments).length - 1
     });
+    
   } catch (err) {
     console.log('Ooops: ', err);
+    
   }
 }
 
 function* ratingComment({id, vote}){
   try {
+    
     const response = yield call(PostsAPI.addCommentScore, {id, vote});
     yield put({type: SUCCESS_RATING_COMMENT, vote : {id, vote : response.voteScore}});
+    
   } catch (err) {
     console.log('Ooops: ', err);
+    
   }
 }
 
@@ -222,24 +260,28 @@ function* ratingComment({id, vote}){
 
 function* getAllCategories(){
   try {
+    
     const categories = yield call(PostsAPI.getCategories);
     yield put({ type: SUCCESS_REQUEST_CATEGORIES, categories});
+    
   } catch (err) {
     console.log('Ooops: ', err);
+    
   }
 }
 
 function* listByCategory({category}){
   try {
-    yield put(showLoading());
+    
     const posts = yield call(PostsAPI.getPostsByCategories,  category.category)
     yield put({
       type: SUCCESS_LIST_BY_CATEGORY,
       posts: getIdAsIndex(posts),
     })
     yield put(hideLoading());
+    
   } catch (err) {
-    yield put(hideLoading());
     console.log('Ooops: ', err);
+    
   }
 }

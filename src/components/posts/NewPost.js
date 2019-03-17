@@ -1,17 +1,16 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-//Action Creators
-import { addPost, updatePost } from '../../actions/posts';
+//Helpers
+import { useFormImput } from '../../utils/useFields';
+import { resetFields } from '../../utils/helpers';
 //Form Components
 import Input from '../FormComponents/Input';
 import Select from '../FormComponents/Select';
 import TextArea from '../FormComponents/TextArea';
 import Button from '../FormComponents/Button';
-//Components
-import { useFormImput } from '../../utils/useFields';
-import { resetFields } from '../../utils/helpers';
-
+//Action Creators
+import { addPost, updatePost } from '../../actions/posts';
 
 function NewPost(props){
     const {post, categories, addPost, updatePost} = props;
@@ -21,7 +20,6 @@ function NewPost(props){
     const body = useFormImput(post ? post.body : '');
     const author = useFormImput(post ? post.author : '');
     const category = useFormImput(post ? post.category : '');
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -41,8 +39,8 @@ function NewPost(props){
 
     const handleClearForm = (e) => {
         e.preventDefault();
-        const params = { title, body, author, category }
-        resetFields(params)
+        const params = 
+        resetFields({ title, body, author, category })
     };
     
     return (

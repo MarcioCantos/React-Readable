@@ -9,6 +9,7 @@ import {
   SUCCESS_RATING_POST,
   SUCCESS_REQUEST_CATEGORIES,
   SUCCESS_LIST_BY_CATEGORY,
+  NOT_FOUND,
 } from '../actions/const'
 
 const INITIAL_STATE = {
@@ -34,7 +35,13 @@ export default function posts(state = INITIAL_STATE, action) {
     };
     
     case SUCCESS_SINGLE_POST :
-    return {...state, post: action.post};
+    return {
+      ...state, 
+      posts: {
+        ...posts,
+        [action.post.id] : action.post
+      }
+    };
     
     case SUCCESS_ADD_POST :
     case SUCCESS_UPDATE_POST:
@@ -78,6 +85,9 @@ export default function posts(state = INITIAL_STATE, action) {
         order : false, 
         error: false
       };
+
+    case NOT_FOUND :
+      return {...state, error : true, errorMsg : action.errorMsg}
 
     default :
     return state;

@@ -35,7 +35,7 @@ export const getAll = () =>
     .then(data => data)
 
 export const getPostById = (id) =>
-  fetch(`${api}/posts/${id.id}`, { headers })
+  fetch(`${api}/posts/${id}`, { headers })
     .then(res => res.json())
     .then(data => data)
 
@@ -84,17 +84,21 @@ export const addComment = (comment) =>
 export const updateComment = ({id, body, timestamp}) => 
   fetch(`${api}/comments/${id}`, {
     method: 'PUT',
-    headers: {...headers, 'Content-Type': 'application/json'}, 
+    headers: {...headers, 'Content-Type': 'application/json'},
     body: JSON.stringify({body, timestamp}),
   }).then(data => data.json())
 
-export const deleteComment = (id) => 
-  fetch(`${api}/comments/${id}`, {
+export const deleteComment = (id) => {
+  return fetch(`${api}/comments/${id}`, {
     method: 'DELETE',
     headers,
+    body: JSON.stringify({deleted : true}),
   }).then(data => data.json())
+}
 
-
+export const deleteAllComments = (comments) => {
+  comments.map(comment => deleteComment(comment))
+}
   
 export const addCommentScore = ({id, vote}) => 
   fetch(`${api}/comments/${id}`, {

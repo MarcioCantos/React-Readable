@@ -34,7 +34,6 @@ export default function posts(state = INITIAL_STATE, action) {
 
         case SUCCESS_ADD_COMMENT :
             const {id} = action.comment;
-            console.log('SUCCESS ADD COMMENT - STATE: ', action.qtdComments)
             return {
                 ...state,
                 comments: {

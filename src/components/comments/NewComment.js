@@ -1,35 +1,45 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'; 
+//Helpers
 import { useFormImput } from '../../utils/useFields';
 import { resetFields } from '../../utils/helpers';
-import { addComments } from '../../actions/comments'
 //Form Components
 import Input from '../FormComponents/Input';
+import Select from '../FormComponents/Select';
 import TextArea from '../FormComponents/TextArea';
 import Button from '../FormComponents/Button';
+//Action Creators
+import { addComments, updateComment } from '../../actions/comments'
 
 const NewComment = (props) => {
+    const {comment, parentId, addComments, updateComment} = props
 
-    const {parentId, addcomments} = props
-
-    const author = useFormImput('');
-    const body = useFormImput('');
+    //set hooks for managing form fields
+    const author = useFormImput(comment ? comment.author : '');
+    const body = useFormImput(comment ? comment.body : '');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        addcomments({
-            author: author.value,
-            body: body.value,            
-        }, parentId);       
-        handleClearForm(e);
+        const holdFormsData = {
+            id : comment ? comment.id : null,
+            author : author.value,
+            body : body.value
+        }
+
+        if(comment){
+            updateComment(holdFormsData);
+            props.onHide();
+        } else {
+            addComments(holdFormsData, parentId);
+            handleClearForm(e);
+        }  
     }
 
     const handleClearForm = (e) => {
         e.preventDefault();
 
-        const params = { author, body }
-        resetFields(params)
+        resetFields({ author, body });
     }
    
     return (
@@ -48,11 +58,12 @@ const NewComment = (props) => {
                     name={'author'}
                     title={'Name'}
                     placeholder={'Author Name'}
+                    disabled={comment ? true : false}
                 />
                 <Button
                     action={handleSubmit}
                     type={"primary"}
-                    title={"Submit Post"}
+                    title={comment ? props.buttonTxt : 'Add Comment'}
                     style={buttonStyle}
                 />
                 <Button
@@ -65,13 +76,10 @@ const NewComment = (props) => {
         </div>
     )
 }
-// const mapStateToProps = (store, parentId) => {
-//     console.log('STORE COMMENT PAGE: ', store);
-//     return { parentId }
-// }
 
 const mapDispatchToProps = dispatch => ({
-    addcomments : bindActionCreators(addComments, dispatch)
+    addComments : bindActionCreators(addComments, dispatch),
+    updateComment : bindActionCreators(updateComment, dispatch),
 })
 
 export default connect(null, mapDispatchToProps)(NewComment);

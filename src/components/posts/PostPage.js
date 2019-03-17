@@ -1,47 +1,66 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+//Actions Creators
 import { requestComentsByPost } from '../../actions/comments';
+import { requestSinglePost } from '../../actions/posts'
+//Components
+import Page404 from '../shared/Page404/'
 import Post from './index';
 import Comment from '../comments';
 import NewComment from '../comments/NewComment'
 
-const PostPage = ({id, commentID, loadingBar, getPostComments}) => {
-    
-    // console.log('LOADHERE:',commentID)
-    // getPostComments(id);
-    useEffect(()=>{
-        getPostComments(id)
+const PostPage = (props) => {
+
+    const {id, commentID, loadingBar, getPostComments, getPost, errorMsg} = props
+
+    useEffect(()=>{        
+        console.log('props em PostPage: ', props)
+        getPost(id);
+        getPostComments(id);
+
     }, [])
+
+
 
     return (
         <div>
-            <Post id={id} />
-            {loadingBar.default === 1
-            ? null
-            : <ul>
-                { commentID.map((id)=> (
-                    <li key={id}>
-                        <Comment id={id}/>
-                    </li>
-                )) }
-              </ul> 
+            {errorMsg
+            ? <Page404 msg={errorMsg} /> 
+            :   
+            <Fragment>
+                <Post id={id} pagePost />
+                <NewComment parentId={id} />
+                {loadingBar.default === 1
+                ? null
+                : <ul>
+                    { commentID.map((id)=> (
+                        <li key={id}>
+                            <Comment id={id}/>
+                        </li>
+                    )) }
+                </ul> 
+                }
+            </Fragment>
             }
-            <NewComment parentId={id} />
         </div>
     )
 }
 
-const mapStateToProps = ({loadingBar, comments}, props) =>{
+const mapStateToProps = ({loadingBar, comments, posts}, props) =>{
     const { id } = props.match.params;
+    const {errorMsg} = posts
     return { 
         id, 
         commentID : Object.keys(comments.comments).map(id => id), 
         loadingBar,
+        errorMsg,
     }
 };
 
-const mapDispatchToProps = dispatch => 
-    ({getPostComments: bindActionCreators(requestComentsByPost, dispatch)})
+const mapDispatchToProps = dispatch => ({
+    getPostComments: bindActionCreators(requestComentsByPost, dispatch),
+    getPost : bindActionCreators(requestSinglePost, dispatch),
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostPage);

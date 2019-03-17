@@ -19,7 +19,6 @@ function Dashboard(props) {
   const [column, setColumn] = useState('');
   const [modalShow, setModalShow] = useState(false);
   const { postIds, order,  match, getAll, sortList, listByCategory, categories } = props;
-  console.log('props em dashboard: ', props)
   
   //Load Posts by Categories or load all
   useEffect(()=>{

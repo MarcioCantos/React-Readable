@@ -21,7 +21,8 @@ export function addComments(comment, parentId){
   }
 }
 
-export function updateComment({id, body}){
+export function updateComment(comment){
+  const {id, body} = comment;
   return {
     type : UPDATE_COMMENT,
     id,

@@ -89,6 +89,5 @@ export function sortList(key, order) {
  * @param  {...any} args //campos que serão resetados
  */
 export function resetFields(params) {
-  console.log(`estou no resete em helpers: `, params)
   return Object.values(params).map(f => f.bind.reset());
 }

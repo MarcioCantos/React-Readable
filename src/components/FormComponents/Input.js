@@ -14,6 +14,7 @@ const Input = (props) => {
                 type={props.inputType}
                 placeholder={props.placeholder}
                 {...props}
+                disabled={props.disabled}
             />
         </div>
     );
