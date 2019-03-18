@@ -46,7 +46,6 @@ const Post = (props) => {
 			history.goBack();
 		}
 	};
-	console.log('vendo props em index post: ', props);
 	return (
 		<Fragment>
 			{loading || post === undefined ? (

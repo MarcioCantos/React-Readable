@@ -34,7 +34,6 @@ export default function posts(state = INITIAL_STATE, action) {
 			return { data: [], error: true, errorMsg: action.err };
 
 		case SUCCESS_POSTS:
-			console.log('state in post reducer: ', state);
 			return {
 				posts: action.posts,
 				categories: action.categories,

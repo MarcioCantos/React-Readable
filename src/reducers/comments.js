@@ -24,7 +24,6 @@ export default function posts(state = INITIAL_STATE, action) {
 			return { data: [], error: true };
 
 		case SUCCESS_LIST_COMMENTS:
-			console.log('action susccess comment: ', action);
 			return {
 				...state,
 				error: false,
