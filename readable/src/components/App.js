@@ -10,11 +10,11 @@ import 'bootstrap/dist/css/bootstrap.css';
 //action creator
 import { listAllCategory } from '../actions/posts';
 //components
+import Spinner from './shared/Spinner';
 import Dashboard from './Dashboard';
 import NewPost from './posts/NewPost';
 import PostPage from './posts/PostPage';
 import Nav from './shared/Nav';
-import Spinner from './shared/Spinner';
 
 const App = (props) => {
 	App.propTypes = {
