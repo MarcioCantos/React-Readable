@@ -27,7 +27,6 @@ export default function posts(state = INITIAL_STATE, action) {
 
     
     case FAILURE_POSTS :
-    console.log('action no reducer: ', action)
     return {data: [], error: true, errorMsg : action.err};
     
     case SUCCESS_POSTS :

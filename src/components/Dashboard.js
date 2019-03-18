@@ -41,10 +41,6 @@ function Dashboard(props) {
     sortList(c, sort);
   }  
   
-  const handleSortingChange = (e, order) => {
-    console.log('o qe vem no select: ', e)
-  } 
-
   //Modal - Close
   const closeModal = () => setModalShow(false);
 

@@ -30,10 +30,10 @@ const App = (props) => {
         ? 'Loading...'
         : <div>              
             <Route path='/' exact component={Dashboard} />
-            <Route path='/post/:id' exact component={PostPage} />
-            <Route path='/post/edit/:id' component={NewPost} />
+            <Route path='/:category' exact component={Dashboard} />
             <Route path='/new' component={NewPost} />
-            <Route path='/category/:category' exact component={Dashboard} />
+            <Route path='/post/edit/:id' component={NewPost} />
+            <Route path='/:category/:id' component={PostPage} />
           </div>          
         }
       </Fragment>

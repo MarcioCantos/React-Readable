@@ -77,7 +77,7 @@ function* requestAllPosts() {
       categories: categories.categories,
     });
     
-
+    
   } catch (err) {
     console.log('Ooops: ', err);
     yield put({ type: FAILURE_POSTS });
@@ -93,7 +93,7 @@ function* requestSinglePost({id}) {
       yield put({ type: NOT_FOUND, errorMsg : post.error === undefined ? "Not Found" : post.error })  
     }else{
       yield put({ type: SUCCESS_SINGLE_POST, post });
-
+      
     }
     
   } catch (err) {
@@ -116,6 +116,22 @@ function* requestAllCommentsByPost({id}){
   } catch (err) { 
     console.log('Ooops: ', err);
     yield put({ type: FAILURE });
+    
+  }
+}
+
+function* listByCategory({category}){
+  try {
+    
+    const posts = yield call(PostsAPI.getPostsByCategories,  category.category);
+    yield put({
+      type: SUCCESS_LIST_BY_CATEGORY,
+      posts: getIdAsIndex(posts),
+    })
+    yield put(hideLoading());
+    
+  } catch (err) {
+    console.log('Ooops: ', err);
     
   }
 }
@@ -260,26 +276,9 @@ function* ratingComment({id, vote}){
   /** CATEGORY */
 
 function* getAllCategories(){
-  try {
-    
+  try {    
     const categories = yield call(PostsAPI.getCategories);
     yield put({ type: SUCCESS_REQUEST_CATEGORIES, categories});
-    
-  } catch (err) {
-    console.log('Ooops: ', err);
-    
-  }
-}
-
-function* listByCategory({category}){
-  try {
-    
-    const posts = yield call(PostsAPI.getPostsByCategories,  category.category)
-    yield put({
-      type: SUCCESS_LIST_BY_CATEGORY,
-      posts: getIdAsIndex(posts),
-    })
-    yield put(hideLoading());
     
   } catch (err) {
     console.log('Ooops: ', err);

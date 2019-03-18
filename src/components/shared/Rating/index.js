@@ -38,7 +38,6 @@ const Rating = (props) => {
 
   return (
     <div>
-      {console.log('icone voting: ', props)}
       <IconVoteUp 
         className={`${voteUp ? "voteUp" : ""} btn-vote`}
         onClick={() => handleVoteUp(!voteUp)}

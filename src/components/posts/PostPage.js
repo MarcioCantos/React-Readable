@@ -16,7 +16,7 @@ const PostPage = (props) => {
 
     const {id, commentID, loadingBar, getPostComments, getPost, errorMsg} = props
 
-    useEffect(()=>{        
+    useEffect(()=>{
         getPost(id);
         getPostComments(id);
 

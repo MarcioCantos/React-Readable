@@ -24,7 +24,7 @@ const Post = ({post, categories, commentCount, history, pagePost, setRate, onDel
   // Handle category link clicked
   const toCategory = (e, category) => {
     e.preventDefault();
-    history.push(`/category/${category}`)
+    history.push(`/${category}`)
   }
 
   const handleDelete = () => {
@@ -67,7 +67,7 @@ const Post = ({post, categories, commentCount, history, pagePost, setRate, onDel
               </div>
             </div>
             <div className="post-title">
-              <Link to={`/post/${post.id}`}>
+              <Link to={`/${post.category}/${post.id}`}>
                 {post.title}
               </Link>
             </div>

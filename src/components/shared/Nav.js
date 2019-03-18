@@ -19,7 +19,7 @@ const Nav = ({categories}) => {
                 <NavLink to='/' className="nav-link">Home</NavLink>
                 <NavDropdown title="Categories" id="basic-nav-dropdown">
                     {categories.map(c => (
-                      <NavDropdown.Item key={c.name} href={`/category/${c.path}`}>
+                      <NavDropdown.Item key={c.name} href={`/${c.path}`}>
                         {c.name}
                       </NavDropdown.Item>
                       ))
