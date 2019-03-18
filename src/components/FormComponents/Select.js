@@ -1,12 +1,6 @@
 import React from 'react';
 
 const Select = (props) => {
-    const { edit } = props.bind;
-    let hold = props;
-    
-    if(edit && props.value === ''){
-        hold = {...props, value : edit}
-    }
 
     return (
         <div className="form-group">
@@ -15,9 +9,9 @@ const Select = (props) => {
                 id={props.name}
                 name={props.name}
                 className="form-control"
-                {...hold}
+                {...props}
             >
-                <option defaultValue="">
+                <option value="" disabled default={true}>
                 {props.placeholder}
                 </option>
                 {props.options.map(option => {

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import LoadingBar from 'react-redux-loading';
+import './App.css'
 //bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
 //action creator

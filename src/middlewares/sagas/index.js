@@ -89,15 +89,16 @@ function* requestSinglePost({id}) {
   try {
     
     const post = yield call(PostsAPI.getPostById, id);
+    if(post.id === undefined){
+      yield put({ type: NOT_FOUND, errorMsg : post.error === undefined ? "Not Found" : post.error })  
+    }else{
+      yield put({ type: SUCCESS_SINGLE_POST, post });
 
-    if(post.error){
-      yield put({ type: NOT_FOUND, errorMsg : post.error })  
     }
-    yield put({ type: SUCCESS_SINGLE_POST, post });
     
   } catch (err) {
     console.log('Ooops: ', err);
-    yield put({ type: FAILURE_POSTS });
+    yield put({ type: FAILURE_POSTS});
     
   }
 }

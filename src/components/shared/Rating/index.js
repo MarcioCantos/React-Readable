@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import './Rating.css'
 
-const Rating = ({values}) => {
+const Rating = (props) => {
   const [voteUp, setVoteUp] = useState(false);
   const [voteDown, setVoteDown] = useState(false);
-  const {id, vote, setRate} = values;
+  const IconVoteUp = props.iconVoteUp;
+  const IconVoteDown = props.iconVoteDown;
+  const {id, vote, setRate} = props.values;
  
   const handleVoteDown = (rate) => {
     setVoteDown(rate)
@@ -25,7 +28,7 @@ const Rating = ({values}) => {
 
   const showScore = () => {
     return (
-      <div>
+      <div className={`score ${voteUp ? "voteUp" : ""}${voteDown ? "voteDown" : ""}`}>
         {voteUp && vote }
         {voteDown && vote }
         {voteUp || voteDown ? "" : vote }
@@ -35,9 +38,16 @@ const Rating = ({values}) => {
 
   return (
     <div>
-      <button onClick={() => handleVoteDown(!voteDown)}>-</button>
+      {console.log('icone voting: ', props)}
+      <IconVoteUp 
+        className={`${voteUp ? "voteUp" : ""} btn-vote`}
+        onClick={() => handleVoteUp(!voteUp)}
+      /> 
         {showScore()}
-      <button onClick={() => handleVoteUp(!voteUp)}>+</button>
+      <IconVoteDown
+        className={`${voteDown ? "voteDown" : ""} btn-vote`}
+        onClick={() => handleVoteDown(!voteDown)} 
+      />
     </div>
   )
 }

@@ -1,6 +1,8 @@
 import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+//Bootstrap
+import {Container, Col, Row, Button, DropdownButton, Dropdown, ButtonGroup} from 'react-bootstrap';
 //Actions Creators
 import { requestComentsByPost } from '../../actions/comments';
 import { requestSinglePost } from '../../actions/posts'
@@ -15,7 +17,6 @@ const PostPage = (props) => {
     const {id, commentID, loadingBar, getPostComments, getPost, errorMsg} = props
 
     useEffect(()=>{        
-        console.log('props em PostPage: ', props)
         getPost(id);
         getPostComments(id);
 
@@ -24,11 +25,12 @@ const PostPage = (props) => {
 
 
     return (
-        <div>
+        <Fragment>
             {errorMsg
             ? <Page404 msg={errorMsg} /> 
             :   
-            <Fragment>
+            <div className="container single-post-page">
+                {/* Flag "pagePost" se TRUE retornar a página de categoria quando deletar uma postagem */}
                 <Post id={id} pagePost />
                 <NewComment parentId={id} />
                 {loadingBar.default === 1
@@ -41,18 +43,22 @@ const PostPage = (props) => {
                     )) }
                 </ul> 
                 }
-            </Fragment>
+            </div>
             }
-        </div>
+        </Fragment>
     )
 }
 
 const mapStateToProps = ({loadingBar, comments, posts}, props) =>{
     const { id } = props.match.params;
     const {errorMsg} = posts
+    const commentID = Object.keys(comments.comments)
+        .sort((a,b,) => comments.comments[b].timestamp - comments.comments[a].timestamp )
+        .map(id => id);
+
     return { 
         id, 
-        commentID : Object.keys(comments.comments).map(id => id), 
+        commentID, 
         loadingBar,
         errorMsg,
     }

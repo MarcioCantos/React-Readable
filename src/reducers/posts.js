@@ -27,7 +27,8 @@ export default function posts(state = INITIAL_STATE, action) {
 
     
     case FAILURE_POSTS :
-    return {data: [], error: true};
+    console.log('action no reducer: ', action)
+    return {data: [], error: true, errorMsg : action.err};
     
     case SUCCESS_POSTS :
     return {
@@ -38,7 +39,7 @@ export default function posts(state = INITIAL_STATE, action) {
     return {
       ...state, 
       posts: {
-        ...posts,
+        ...state.posts,
         [action.post.id] : action.post
       }
     };

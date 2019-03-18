@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux'; 
+import { bindActionCreators } from 'redux';
+import './style.css';
 //Helpers
 import { useFormImput } from '../../utils/useFields';
 import { resetFields } from '../../utils/helpers';
@@ -43,36 +44,38 @@ const NewComment = (props) => {
     }
    
     return (
-        <div>
-            <form onSubmit={handleSubmit}>                
-            
-                <TextArea 
-                    {...body}
-                    title={"Whats Matter:"}
-                    name={'message'}
-                    placeholder={'What you are thinking goes here.'}
-                    rows={10}
-                />               
-                <Input 
-                    {...author}
-                    name={'author'}
-                    title={'Name'}
-                    placeholder={'Author Name'}
-                    disabled={comment ? true : false}
-                />
-                <Button
-                    action={handleSubmit}
-                    type={"primary"}
-                    title={comment ? props.buttonTxt : 'Add Comment'}
-                    style={buttonStyle}
-                />
-                <Button
-                    action={handleClearForm}
-                    type={"secondary"}
-                    title={"Clear"}
-                    style={buttonStyle}
-                />
-            </form>
+        <div className="container">
+            <div className="comment-form-page">
+                <form onSubmit={handleSubmit}>                
+                
+                    <TextArea 
+                        {...body}
+                        title={"What are you thinking?"}
+                        name={'message'}
+                        placeholder={'I guess...'}
+                        rows={3}
+                    />               
+                    <Input 
+                        {...author}
+                        name={'author'}
+                        title={'Name'}
+                        placeholder={'Vous vous appelez?'}
+                        disabled={comment ? true : false}
+                    />
+                    <Button
+                        action={handleSubmit}
+                        type={"primary"}
+                        title={comment ? props.buttonTxt : 'Add Comment'}
+                        style={buttonStyle}
+                    />
+                    <Button
+                        action={handleClearForm}
+                        type={"secondary"}
+                        title={"Clear"}
+                        style={buttonStyle}
+                    />
+                </form>
+            </div>
         </div>
     )
 }
