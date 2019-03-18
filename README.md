@@ -35,4 +35,4 @@ You will also see any lint errors in the console.
 
 ### Webserver
 
-You must access the subdirectory "readable-server/api-server" and follow THE README file there for instructions
+You must access the subdirectory "readable-server/api-server" and follow THE README file there for instructions.
