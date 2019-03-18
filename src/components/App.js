@@ -1,4 +1,5 @@
 import React, { useEffect, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -13,9 +14,16 @@ import Dashboard from './Dashboard';
 import NewPost from './posts/NewPost';
 import PostPage from './posts/PostPage';
 import Nav from './shared/Nav';
+import Spinner from './shared/Spinner';
 
 const App = (props) => {
-  const { loadingBar } = props
+
+
+  App.propTypes = {
+    loading: PropTypes.string.isRequired,
+  }
+
+  const { loading } = props
   
   useEffect(()=>{
     props.getCategories();
@@ -26,8 +34,8 @@ const App = (props) => {
       <Fragment>
         <LoadingBar />
         <Nav />
-        {loadingBar === 1
-        ? 'Loading...'
+        {loading
+        ? <Spinner />
         : <div>              
             <Route path='/' exact component={Dashboard} />
             <Route path='/:category' exact component={Dashboard} />
@@ -42,11 +50,7 @@ const App = (props) => {
 }
 
 
-const mapStateToProps = ({loadingBar}) => {
-  return {
-    loadingBar,
-  };
-};
+const mapStateToProps = ({loading}) =>  ({loading});
 
 const mapDispatchToProps = (dispatch) => ({ getCategories : bindActionCreators(listAllCategory, dispatch)})
 

@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import './Rating.css'
 
 const Rating = (props) => {
+
+  Rating.propTypes = {
+    id: PropTypes.string,
+    vote : PropTypes.number,
+    setRate : PropTypes.func,
+  }
+
   const [voteUp, setVoteUp] = useState(false);
   const [voteDown, setVoteDown] = useState(false);
   const IconVoteUp = props.iconVoteUp;

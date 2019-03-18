@@ -1,4 +1,5 @@
 import React, {Fragment, useState} from 'react';
+import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -17,6 +18,17 @@ import Spinner from '../shared/Spinner'
 
 
 const Post = (props) => {
+
+  Post.propTypes = {
+    id : PropTypes.string.isRequired,
+    categories : PropTypes.array.isRequired,
+    commentCount : PropTypes.number.isRequired,
+    loading : PropTypes.bool.isRequired,
+    setRate : PropTypes.func.isRequired,
+    onDeleteClick : PropTypes.func.isRequired,
+    post : PropTypes.object,
+  }
+
   const {post, categories, commentCount, history, loading, pagePost, setRate, onDeleteClick} = props;
   const [modalShow, setModalShow] = useState(false);
 
@@ -81,18 +93,18 @@ console.log('vendo props em index post: ', props);
             </div>     
           </div>
           <div className="post-buttons">
-              <button
-                className="btn btn-default btn-edit"
-                onClick={() => setModalShow(true)}
-              > 
-                <FiEdit3 />
-              </button>
-              <button
-                className="btn btn-danger"
-                onClick={handleDelete}
-              >
-                <FiTrash2 />
-              </button>
+            <button
+              className="btn btn-default btn-edit"
+              onClick={() => setModalShow(true)}
+            > 
+              <FiEdit3 />
+            </button>
+            <button
+              className="btn btn-danger"
+              onClick={handleDelete}
+            >
+              <FiTrash2 />
+            </button>
 
           </div>
           <Modal 

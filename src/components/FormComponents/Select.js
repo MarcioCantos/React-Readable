@@ -1,6 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Select = (props) => {
+
+    Select.propTypes = {
+        title: PropTypes.string.isRequired,
+        options : PropTypes.array.isRequired,
+    }
 
     return (
         <div className="form-group">

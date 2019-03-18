@@ -1,6 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Input = (props) => {
+
+    Input.propTypes = {
+        title: PropTypes.string.isRequired,
+    }
     
     return (
         <div className="form-group">

@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 //Actions Creators
@@ -9,10 +10,20 @@ import Page404 from '../shared/Page404/'
 import Post from './index';
 import Comment from '../comments';
 import NewComment from '../comments/NewComment'
+import Spinner from '../shared/Spinner'
 
 const PostPage = (props) => {
 
-    const {id, commentID, loadingBar, getPostComments, getPost, errorMsg} = props
+    PostPage.propTypes = {
+        id: PropTypes.string.isRequired,
+        commentID : PropTypes.array.isRequired,
+        loading : PropTypes.bool,
+        getPostComments : PropTypes.func.isRequired,
+        getPost: PropTypes.func.isRequired,
+        errorMsg : PropTypes.string,
+    }
+
+    const {id, commentID, loading, getPostComments, getPost, errorMsg} = props
 
     useEffect(()=>{
         getPost(id);
@@ -31,8 +42,8 @@ const PostPage = (props) => {
                 {/* Flag "pagePost" se TRUE retornar a página de categoria quando deletar uma postagem */}
                 <Post id={id} pagePost />
                 <NewComment parentId={id} />
-                {loadingBar.default === 1
-                ? null
+                {loading
+                ? <Spinner />
                 : <ul>
                     { commentID.map((id)=> (
                         <li key={id}>

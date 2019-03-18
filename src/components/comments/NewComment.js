@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import './style.css';
@@ -13,6 +14,14 @@ import Button from '../FormComponents/Button';
 import { addComments, updateComment } from '../../actions/comments'
 
 const NewComment = (props) => {
+    
+    NewComment.propTypes = {
+        comment: PropTypes.object.isRequired,
+        parentId : PropTypes.string.isRequired,
+        addComments : PropTypes.func.isRequired,
+        updateComment : PropTypes.func.isRequired,
+    }
+
     const {comment, parentId, addComments, updateComment} = props
 
     //set hooks for managing form fields

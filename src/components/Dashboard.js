@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createSelector } from 'reselect'
@@ -17,9 +18,19 @@ import Spinner from './shared/Spinner'
 
 
 function Dashboard(props) {
+
+  Dashboard.propTypes = {
+    postIds : PropTypes.array.isRequired,
+    categories : PropTypes.array.isRequired,
+    loading : PropTypes.bool.isRequired, 
+    getAll : PropTypes.func.isRequired,
+    sortList : PropTypes.func.isRequired, 
+    listByCategory : PropTypes.func.isRequired, 
+  }
+
   const [column, setColumn] = useState('');
   const [modalShow, setModalShow] = useState(false);
-  const { postIds, order,  match, getAll, sortList, listByCategory, categories } = props;
+  const { postIds, order,  match, getAll, sortList, loading, listByCategory, categories } = props;
 
   // const TITLE = 'title';
   const TIMESTAMP = 'timestamp';
@@ -51,7 +62,7 @@ function Dashboard(props) {
 
   return(
     <Fragment>
-      {props.loading
+      {loading
       ? <Spinner />
       : <Container>
             <Row>
@@ -109,7 +120,6 @@ function Dashboard(props) {
             </div>
 
             : <ul>
-              {console.log('numero de posts: ', postIds.length)}
               { postIds.map((id) => (
                 <li key={id}>
                   <Post id={id} />

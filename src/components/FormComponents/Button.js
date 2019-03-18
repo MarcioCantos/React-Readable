@@ -1,6 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Button = (props) => {
+    
+    Button.propTypes = {
+        title: PropTypes.string.isRequired,
+    }
+
     return (
         <button
             style={props.style}

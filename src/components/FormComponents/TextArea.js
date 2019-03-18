@@ -1,12 +1,13 @@
 import React from "react";
+import PropTypes from 'prop-types';
 
-const TextArea = (props) => {    
-    const { edit } = props.bind;
-    let hold = props;
+const TextArea = (props) => { 
     
-    if(edit && props.value === ''){
-        hold = {...props, value : edit}
+    TextArea.propTypes = {
+        title: PropTypes.string.isRequired,
     }
+
+    
 
     return (
         <div className="form-group">
@@ -17,9 +18,8 @@ const TextArea = (props) => {
                 rows={props.rows}
                 // cols={props.cols}
                 placeholder={props.placeholder}
-
                 id={props.name}
-                {...hold}
+                {...props}
             />
         </div>
     );

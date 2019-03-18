@@ -1,4 +1,5 @@
 import React, {Fragment, useState} from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import './style.css'
@@ -15,6 +16,13 @@ import Modal from '../shared/Modal';
 
 
 const Comment = ({comment, setRate, onDeleteClick}) => {
+
+    Comment.propTypes = {
+        comment: PropTypes.object.isRequired,
+        setRate : PropTypes.func.isRequired,
+        onDeleteClick : PropTypes.func.isRequired,
+    }
+
     const {id, author, body, voteScore} = comment;
     const [modalShow, setModalShow] = useState(false);
 
