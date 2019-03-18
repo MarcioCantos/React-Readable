@@ -4,7 +4,7 @@ This is a simple Blog project where you will be able to send a post. You may giv
 
 ## Install
 
-To get started you will need install it:
+To get started you will need to access the subdirectory ""readable" and install it:
 
 yarn:
 
