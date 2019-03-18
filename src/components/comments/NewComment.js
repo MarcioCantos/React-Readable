@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import './style.css';
@@ -7,7 +7,6 @@ import { useFormImput } from '../../utils/useFields';
 import { resetFields } from '../../utils/helpers';
 //Form Components
 import Input from '../FormComponents/Input';
-import Select from '../FormComponents/Select';
 import TextArea from '../FormComponents/TextArea';
 import Button from '../FormComponents/Button';
 //Action Creators

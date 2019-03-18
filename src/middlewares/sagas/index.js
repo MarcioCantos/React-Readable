@@ -28,19 +28,15 @@ import {
   REQUEST_CATEGORIES,
   SUCCESS_REQUEST_CATEGORIES,
   SUCCESS_SINGLE_POST,
-  START_LOADING,
-  STOP_LOADING,
   NOT_FOUND,
 } from '../../actions/const'
-import { takeLatest, all, takeEvery, put, call, select } from 'redux-saga/effects';
+import { takeLatest, all, takeEvery, put, call, select, delay } from 'redux-saga/effects';
 import * as PostsAPI from '../../utils/apis/PostsAPI';
 import { getIdAsIndex, formatPost, formatComment } from '../../utils/helpers';
-import { showLoading, hideLoading } from 'react-redux-loading';
+// import { showLoading, hideLoading } from 'react-redux-loading';
 
 
 export default function* root(){
-  yield takeLatest(START_LOADING, startLoading);
-  yield takeLatest(STOP_LOADING, startLoading);
   yield takeLatest(REQUEST_POSTS, requestAllPosts);
   yield takeLatest(REQUEST_SINGLE_POST, requestSinglePost)
   yield takeLatest(ADD_POST, addNewPost);
@@ -56,17 +52,10 @@ export default function* root(){
   yield takeLatest(LIST_BY_CATEGORY, listByCategory);
 }
 
-function* startLoading(){
-  yield put(showLoading());
-}
-function* stopLoading(){
-  yield put(hideLoading());
-}
-
 function* requestAllPosts() {
-  try {
-    
+  try {    
     //get Posts and Categories from PostsAPI
+    yield delay(1000);
     const [posts, categories] = yield all([
       call(PostsAPI.getAll),
       call(PostsAPI.getCategories)
@@ -107,9 +96,12 @@ function* requestAllCommentsByPost({id}){
   try {
     
     const response = yield call(PostsAPI.getAllCommentsByPost, id);
+    const qtdComments = yield select(state => state.comments.comments);
+
     yield put({
       type: SUCCESS_LIST_COMMENTS, 
       comments: getIdAsIndex(response),
+      qtdComments : Object.keys(qtdComments).length + 1,
     });   
     
     
@@ -128,7 +120,6 @@ function* listByCategory({category}){
       type: SUCCESS_LIST_BY_CATEGORY,
       posts: getIdAsIndex(posts),
     })
-    yield put(hideLoading());
     
   } catch (err) {
     console.log('Ooops: ', err);
@@ -137,7 +128,6 @@ function* listByCategory({category}){
 }
 
   /** POSTS */
-
 
 function* addNewPost({post}){
   try {    
@@ -207,16 +197,18 @@ function* ratingPost({id, vote}){
 function* addNewComment({comment, parentId}){
   try {
     
-    //get quantity of post comments
-    const qtdComments = yield select(state => state.comments.comments);
-
+    
     const response = yield call(
       PostsAPI.addComment, formatComment({...comment, parentId}
     ));
+    
+    const qtdComments = yield select(state => state.comments.comments);
+    console.log('adicionadno comment saga: ', qtdComments)
+    
     yield put({
       type : SUCCESS_ADD_COMMENT,
       comment : response,
-      qtdComments : Object.keys(qtdComments).length + 1
+      qtdComments : Object.keys(qtdComments).length + 1,
     });
     
   } catch (err) {
@@ -242,6 +234,7 @@ function* updateComment({id, body}){
   }
 }
 
+
 function* deleteComment({id}){
   try {
     
@@ -252,7 +245,7 @@ function* deleteComment({id}){
     yield put({ 
       type: SUCCESS_DELETE_COMMENT,
       comment,
-      qtdComments : Object.keys(qtdComments).length - 1
+      qtdComments : Object.keys(qtdComments).length - 1,
     });
     
   } catch (err) {

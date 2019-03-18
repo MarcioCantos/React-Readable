@@ -26,10 +26,13 @@ export default function posts(state = INITIAL_STATE, action) {
             return {data: [], error: true};
 
         case SUCCESS_LIST_COMMENTS :
+        console.log('action susccess comment: ', action)
             return {
                 ...state,
                 error: false,
-                comments: { ...action.comments},
+                comments: { 
+                    ...action.comments,
+                }
             };
 
         case SUCCESS_ADD_COMMENT :
@@ -39,7 +42,7 @@ export default function posts(state = INITIAL_STATE, action) {
                 comments: {
                     ...state.comments, [id] : action.comment
                 },
-                qtdComments: action.qtdComments,
+                allComments : true,
             };
         
         case SUCCESS_UPDATE_COMMENT :
@@ -57,7 +60,7 @@ export default function posts(state = INITIAL_STATE, action) {
 
             return { 
                 comments,
-                qtdComments: action.qtdComments,             
+                qtdComments: action.qtdComments,         
             };
         
         case SUCCESS_DELETE_ALL_COMMENTS :

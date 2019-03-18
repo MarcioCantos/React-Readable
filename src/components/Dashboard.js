@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createSelector } from 'reselect'
@@ -13,17 +13,20 @@ import { requestPostsList, sortPosts, listByCategory } from '../actions/posts';
 import Post from './posts';
 import NewPost from './posts/NewPost';
 import Modal from './shared/Modal';
+import Spinner from './shared/Spinner'
+
 
 function Dashboard(props) {
   const [column, setColumn] = useState('');
   const [modalShow, setModalShow] = useState(false);
   const { postIds, order,  match, getAll, sortList, listByCategory, categories } = props;
 
-  const TITLE = 'title';
+  // const TITLE = 'title';
   const TIMESTAMP = 'timestamp';
   const VOTESCORE = 'voteScore';
   const COMMENTCOUNT = 'commentCount';
   
+
   //Load Posts by Categories or load all
   useEffect(()=>{
     const params = Object.keys(match.params)
@@ -34,6 +37,7 @@ function Dashboard(props) {
     }
   },[match.params.category])
 
+
   //Sorting Columns
   const toggleOrder = (c) => {
     const sort = (column === c) ? !order : true ;
@@ -41,67 +45,85 @@ function Dashboard(props) {
     sortList(c, sort);
   }  
   
+  
   //Modal - Close
   const closeModal = () => setModalShow(false);
 
   return(
-    <Container>
-        <Row>
-          <Col md={{ span: 2, offset: 10 }}>
-            <ButtonGroup >        
-              <DropdownButton as={ButtonGroup} title="Order by" id="bg-nested-dropdown" variant="secondary" size="sm"  >
-                <Dropdown.Item eventKey="1" onClick={() => toggleOrder(TITLE)} >
-                  Title
-                </Dropdown.Item>
-                <Dropdown.Item eventKey="2" onClick={() => toggleOrder(TIMESTAMP)}>
-                  Date
-                </Dropdown.Item>
-                <Dropdown.Item eventKey="3" onClick={() => toggleOrder(VOTESCORE)}>
-                  Vote Score
-                </Dropdown.Item>
-              </DropdownButton>
-            </ButtonGroup>
-          </Col>
+    <Fragment>
+      {props.loading
+      ? <Spinner />
+      : <Container>
+            <Row>
+              <Col md={{ span: 2, offset: 10 }}>
+                <ButtonGroup >        
+                  <DropdownButton as={ButtonGroup} title="Order by" id="bg-nested-dropdown" variant="secondary" size="sm"  >
+                    <Dropdown.Item eventKey="2" onClick={() => toggleOrder(TIMESTAMP)}>
+                      Date
+                    </Dropdown.Item>
+                    <Dropdown.Item eventKey="3" onClick={() => toggleOrder(VOTESCORE)}>
+                      Vote Score
+                    </Dropdown.Item>
+                    <Dropdown.Item eventKey="3" onClick={() => toggleOrder(COMMENTCOUNT)}>
+                      Number of Comments
+                    </Dropdown.Item>
+                  </DropdownButton>
+                </ButtonGroup>
+              </Col>
 
-        </Row>
+            </Row>
+          
+          {/** Modal Button */}
+          <Button
+              onClick={() => setModalShow(true)}
+              className="btn-addNew"
+            >
+              <FaPlus/>
+              <div>
+                New 
+              </div>
+            </Button>
+          
+          {
+          /**
+           * @inner recebe o Componente que será exibido dentro do Modal
+           * @show e @onHide devem ser criados no componente que conteŕa o modal e passado como props
+           * @title título que será exibido quando o componente for exibido ao usuário
+           * Qualquer outro props que for passado será "enviado" ao @inner como props.
+           */
+          }
+          <Modal 
+            inner={NewPost} 
+            show={modalShow}
+            onHide={closeModal}
+            title='Add New Post'
+            categories={categories}        
+          />
+          <Row className="dashboard">
+
+            {postIds.length === 0
+            ? <div className="no-post">
+              There is no Post! 
+              <br />
+              Be the first one do it.
+            </div>
+
+            : <ul>
+              {console.log('numero de posts: ', postIds.length)}
+              { postIds.map((id) => (
+                <li key={id}>
+                  <Post id={id} />
+                </li>
+              ))}
+            </ul>
+
+            }
+
+          </Row>
+        </Container>
       
-      {/** Modal Button */}
-      <Button
-          onClick={() => setModalShow(true)}
-          className="btn-addNew"
-        >
-          <FaPlus/>
-          <div>
-            New 
-          </div>
-        </Button>
-      
-      {
-      /**
-       * @inner recebe o Componente que será exibido dentro do Modal
-       * @show e @onHide devem ser criados no componente que conteŕa o modal e passado como props
-       * @title título que será exibido quando o componente for exibido ao usuário
-       * Qualquer outro props que for passado será "enviado" ao @inner como props.
-       */
       }
-      <Modal 
-        inner={NewPost} 
-        show={modalShow}
-        onHide={closeModal}
-        title='Add New Post'
-        categories={categories}        
-      />
-      <Row className="dashboard">
-        <ul>
-          { postIds.map((id) => (
-            <li key={id}>
-              <Post id={id} />
-            </li>
-          ))}
-        </ul>
-
-      </Row>
-    </Container>
+    </Fragment>
   );
 }
 
@@ -118,9 +140,8 @@ const sortingList = createSelector(
 );
 
 const mapStateToProps = (store) => {
+  const {loading} = store.posts;
   const {categories, posts, column, order } = store.posts
-  // sort((a,b,) => tweets[b].timestamp - twwets[a].timestamp)
-
   const initialList = posts === undefined ? []
     : Object.keys(posts)
     .sort((a,b,) => posts[b].timestamp - posts[a].timestamp )
@@ -131,6 +152,7 @@ const mapStateToProps = (store) => {
     posts,
     order,
     postIds : column === undefined ? initialList : sortingList(store.posts),
+    loading,
   };
 };
 

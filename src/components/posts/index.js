@@ -3,7 +3,7 @@ import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 //ICONS
-import { FiThumbsUp, FiThumbsDown, FiUser, FiEdit3, FiTrash2, FiPlus } from "react-icons/fi";
+import { FiThumbsUp, FiThumbsDown, FiUser, FiEdit3, FiTrash2 } from "react-icons/fi";
 import { FaCommentAlt } from "react-icons/fa";
 //Helpers
 import { timeSince } from '../../utils/helpers';
@@ -13,9 +13,11 @@ import { deletePost, ratePost } from '../../actions/posts';
 import NewPost from './NewPost'
 import Rating from '../shared/Rating';
 import Modal from '../shared/Modal';
+import Spinner from '../shared/Spinner'
 
 
-const Post = ({post, categories, commentCount, history, pagePost, setRate, onDeleteClick}) => {
+const Post = (props) => {
+  const {post, categories, commentCount, history, loading, pagePost, setRate, onDeleteClick} = props;
   const [modalShow, setModalShow] = useState(false);
 
   //Modal - Close
@@ -34,11 +36,11 @@ const Post = ({post, categories, commentCount, history, pagePost, setRate, onDel
       history.goBack();
     }
   }
-
+console.log('vendo props em index post: ', props);
   return (
     <Fragment>
-      {post === undefined 
-      ? null
+      {loading || post === undefined
+      ? <Spinner/>
       : 
       <Fragment>
         <div className="post">
@@ -113,17 +115,20 @@ const Post = ({post, categories, commentCount, history, pagePost, setRate, onDel
   )
 }
 
-const mapStateToProps = (store, {id} ) => {
+const mapStateToProps = (store, props ) => {
+  const {id} = props;
   const post = store.posts.posts[id];
-  const categories = store.posts.categories;
-  const loading = store.posts.loading;
-  const commentCount = store.comments.comments;
+  const {comments} = store.comments
+  const {categories, loading, isRoot} = store.posts;
   
+  const commentCount = isRoot ? post.commentCount : Object.keys(comments).length ;
+  
+
   return {
     post,
     categories,
     loading,
-    commentCount : Object.keys(commentCount).length,
+    commentCount,
   }
 }
 

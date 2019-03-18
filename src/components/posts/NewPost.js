@@ -39,7 +39,6 @@ function NewPost(props){
 
     const handleClearForm = (e) => {
         e.preventDefault();
-        const params = 
         resetFields({ title, body, author, category })
     };
     

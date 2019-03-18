@@ -10,6 +10,8 @@ import {
   SUCCESS_REQUEST_CATEGORIES,
   SUCCESS_LIST_BY_CATEGORY,
   NOT_FOUND,
+  REQUEST_POSTS,
+  REQUEST_SINGLE_POST,
 } from '../actions/const'
 
 const INITIAL_STATE = {
@@ -17,21 +19,31 @@ const INITIAL_STATE = {
   categories: [],
   error : false,
   order : false,
-}
+  loading : false,
+};
 
 export default function posts(state = INITIAL_STATE, action) {
   switch(action.type) {
 
-    // case REQUEST_POSTS :
-    //   return { ...state };
+    case REQUEST_POSTS :
+      return { ...state, loading: true, };
+    
+    case REQUEST_SINGLE_POST :
+      return { ...state, loading: true};
 
     
     case FAILURE_POSTS :
     return {data: [], error: true, errorMsg : action.err};
     
     case SUCCESS_POSTS :
+    console.log('state in post reducer: ', state)
     return {
-      posts: action.posts, categories: action.categories, order : false, error: false
+      posts: action.posts, 
+      categories: action.categories,
+      loading: false,
+      order : false, 
+      error: false,
+      isRoot : true,
     };
     
     case SUCCESS_SINGLE_POST :
@@ -40,14 +52,19 @@ export default function posts(state = INITIAL_STATE, action) {
       posts: {
         ...state.posts,
         [action.post.id] : action.post
-      }
+      },
+      loading: false,
+      error: false,
+      isRoot : false,
     };
     
     case SUCCESS_ADD_POST :
     case SUCCESS_UPDATE_POST:
       return {
         ...state,
-        posts: {...state.posts, [action.post.id]: action.post}
+        posts: {...state.posts, [action.post.id]: action.post},
+        loading: false,
+        error: false,
       };     
     
     case SUCCESS_DELETE_POST :
@@ -56,7 +73,10 @@ export default function posts(state = INITIAL_STATE, action) {
       
       return {  
         ...state,
-        posts, order: false };
+        posts, 
+        loading: false,
+        error: false,
+      };
 
     case SUCCESS_RATING_POST :
       return {

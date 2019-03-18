@@ -2,10 +2,8 @@ import React, {Fragment, useState} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import './style.css'
-//Bootstrap
-import {Container, Col, Row, Button, DropdownButton, Dropdown, ButtonGroup} from 'react-bootstrap';
 //ICONS
-import { FiThumbsUp, FiThumbsDown, FiUser, FiEdit3, FiTrash2, FiPlus } from "react-icons/fi";
+import { FiThumbsUp, FiThumbsDown, FiEdit3, FiTrash2 } from "react-icons/fi";
 //Helpers
 import { timeSince } from '../../utils/helpers';
 //Actions Creators

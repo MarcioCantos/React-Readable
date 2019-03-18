@@ -1,0 +1,15 @@
+.mySpinner-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3em;
+    color:white;
+    position:absolute;
+    top: calc(50% - 50px);
+    left: calc(50% - 50px);
+}
+
+.spinner-border {
+    width:100px;
+    height: 100px;
+}

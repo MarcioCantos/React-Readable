@@ -1,8 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-//Bootstrap
-import {Container, Col, Row, Button, DropdownButton, Dropdown, ButtonGroup} from 'react-bootstrap';
 //Actions Creators
 import { requestComentsByPost } from '../../actions/comments';
 import { requestSinglePost } from '../../actions/posts'
