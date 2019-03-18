@@ -1,14 +1,14 @@
 .score {
-    font-family: 'Fira Sans Condensed', sans-serif;
+	font-family: 'Fira Sans Condensed', sans-serif;
 }
 .voteUp {
-    color: #3a7bd5;
+	color: #3a7bd5;
 }
 
 .voteDown {
-    color:#A43931;
+	color: #a43931;
 }
 
 .btn-vote {
-    cursor: pointer;
+	cursor: pointer;
 }

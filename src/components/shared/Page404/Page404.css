@@ -2,17 +2,17 @@
 
 * {
 	-webkit-box-sizing: border-box;
-	box-sizing: border-box
+	box-sizing: border-box;
 }
 
 body {
 	padding: 0;
-	margin: 0
+	margin: 0;
 }
 
 #notfound {
 	position: relative;
-	height: 100vh
+	height: 100vh;
 }
 
 #notfound .notfound {
@@ -21,21 +21,21 @@ body {
 	top: 50%;
 	-webkit-transform: translate(-50%, -50%);
 	-ms-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%)
+	transform: translate(-50%, -50%);
 }
 
 .notfound {
 	max-width: 520px;
 	width: 100%;
 	line-height: 1.4;
-	text-align: center
+	text-align: center;
 }
 
 .notfound .notfound-404 {
 	position: relative;
 	height: 200px;
 	margin: 0 auto 20px;
-	z-index: -1
+	z-index: -1;
 }
 
 .notfound .notfound-404 h1 {
@@ -50,7 +50,7 @@ body {
 	top: 50%;
 	-webkit-transform: translate(-50%, -50%);
 	-ms-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%)
+	transform: translate(-50%, -50%);
 }
 
 .notfound .notfound-404 h2 {
@@ -66,7 +66,7 @@ body {
 	position: absolute;
 	bottom: 0;
 	left: 0;
-	right: 0
+	right: 0;
 }
 
 .notfound a {
@@ -80,33 +80,33 @@ body {
 	background: #ff6300;
 	font-size: 18px;
 	-webkit-transition: .2s all;
-	transition: .2s all
+	transition: .2s all;
 }
 
 .notfound a:hover {
 	color: #ff6300;
-	background: #211b19
+	background: #211b19;
 }
 
-@media only screen and (max-width:767px) {
+@media only screen and (max-width: 767px) {
 	.notfound .notfound-404 h1 {
-		font-size: 148px
+		font-size: 148px;
 	}
 }
 
-@media only screen and (max-width:480px) {
+@media only screen and (max-width: 480px) {
 	.notfound .notfound-404 {
 		height: 148px;
-		margin: 0 auto 10px
+		margin: 0 auto 10px;
 	}
 	.notfound .notfound-404 h1 {
-		font-size: 86px
+		font-size: 86px;
 	}
 	.notfound .notfound-404 h2 {
-		font-size: 16px
+		font-size: 16px;
 	}
 	.notfound a {
 		padding: 7px 15px;
-		font-size: 14px
+		font-size: 14px;
 	}
 }

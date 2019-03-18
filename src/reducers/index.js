@@ -4,7 +4,7 @@ import comments from './comments';
 import { loadingBarReducer } from 'react-redux-loading';
 
 export default combineReducers({
-  posts,
-  comments,
-  loadingBar : loadingBarReducer,
-})
+	posts,
+	comments,
+	loadingBar: loadingBarReducer
+});
