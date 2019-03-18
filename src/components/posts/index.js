@@ -21,10 +21,10 @@ const Post = ({post, commentCount, history, setRate, onDeleteClick}) => {
   console.log('history in post component: ', history)
   return (
     <Fragment>
-      {post === undefined 
+      {post === undefined
       ? history.push('/')
       : <div>
-          <Link to={`/post/${post.id}`}> 
+          <Link to={`/post/${post.id}`}>
             <p>
               {post.title}
             </p>
@@ -35,7 +35,7 @@ const Post = ({post, commentCount, history, setRate, onDeleteClick}) => {
               texto: {post.body}
             </p>
             <p>
-              categoria: 
+              categoria:
               <button onClick={(e)=>toCategory(e, post.category)}>
                 {post.category}
               </button>
@@ -46,7 +46,7 @@ const Post = ({post, commentCount, history, setRate, onDeleteClick}) => {
             <p>
               timestamp: {timeSince(post.timestamp)}
             </p>
-          </Link>      
+          </Link>
           <Rating values={{
             id : post.id,
             vote : post.voteScore,
@@ -70,7 +70,7 @@ const mapStateToProps = (store, {id} ) => {
   const post = store.posts.posts[id];
   const loading = store.posts.loading;
   const commentCount = store.comments.qtdComments;
-  
+
   return {
     post,
     loading,

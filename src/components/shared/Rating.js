@@ -5,7 +5,7 @@ const Rating = ({values}) => {
   const [voteUp, setVoteUp] = useState(false);
   const [voteDown, setVoteDown] = useState(false);
   const {id, vote, setRate} = values;
- 
+
   const handleVoteDown = (rate) => {
     setVoteDown(rate)
     rate ? submitRatePost('downVote') : submitRatePost('upVote');

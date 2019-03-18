@@ -6,7 +6,7 @@ import { addPost, listAllCategory } from '../../actions/posts';
 import { useFormImput } from '../../utils/useFields';
 import { resetFields } from '../../utils/helpers';
 
-function NewPost(props){   
+function NewPost(props){
     const [toHome, setToHome] = useState(false);
 
     useEffect(()=> {
@@ -19,19 +19,19 @@ function NewPost(props){
     const body = useFormImput('')
     const author = useFormImput('')
     const category = useFormImput('')
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
         props.addPost({
-            title: title.value, 
+            title: title.value,
             body: body.value,
             author : author.value,
             category : category.value,
          });
          resetFields(title, body, author, category);
          setToHome(true);
-    }  
-    
+    }
+
     return (
         <div>
             {toHome && <Redirect to='/' />}
@@ -63,7 +63,7 @@ function NewPost(props){
                     {...title}
                     placeholder="Title"
                 />
-                <textarea 
+                <textarea
                     {...body}
                     placeholder="What I'm thinking right now..."
                     className='textarea'

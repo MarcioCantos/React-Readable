@@ -7,7 +7,7 @@ import Comment from '../comments';
 import NewComment from '../comments/NewComment'
 
 const PostPage = ({id, commentID, loadingBar, getPostComments}) => {
-    
+
     // console.log('LOADHERE:',commentID)
     // getPostComments(id);
     useEffect(()=>{
@@ -25,7 +25,7 @@ const PostPage = ({id, commentID, loadingBar, getPostComments}) => {
                         <Comment id={id}/>
                     </li>
                 )) }
-              </ul> 
+              </ul>
             }
             <NewComment parentId={id} />
         </div>
@@ -34,14 +34,14 @@ const PostPage = ({id, commentID, loadingBar, getPostComments}) => {
 
 const mapStateToProps = ({loadingBar, comments}, props) =>{
     const { id } = props.match.params;
-    return { 
-        id, 
-        commentID : Object.keys(comments.comments).map(id => id), 
+    return {
+        id,
+        commentID : Object.keys(comments.comments).map(id => id),
         loadingBar,
     }
 };
 
-const mapDispatchToProps = dispatch => 
+const mapDispatchToProps = dispatch =>
     ({getPostComments: bindActionCreators(requestComentsByPost, dispatch)})
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostPage);

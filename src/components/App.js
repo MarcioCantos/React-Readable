@@ -12,7 +12,7 @@ import PostPage from './posts/PostPage';
 import Nav from './shared/Nav';
 
 const App = ({loadingBar}) => {
- 
+
   return (
     <Router>
       <Fragment>
@@ -20,12 +20,12 @@ const App = ({loadingBar}) => {
         <Nav />
         {loadingBar === 1
         ? null
-        : <div>              
+        : <div>
             <Route path='/' exact component={Dashboard} />
             <Route path='/post/:id' component={PostPage} />
             <Route path='/new' component={NewPost} />
             <Route path='/category/:category' exact component={Dashboard} />
-          </div>          
+          </div>
         }
       </Fragment>
     </Router>

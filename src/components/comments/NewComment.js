@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux'; 
+import { bindActionCreators } from 'redux';
 import { useFormImput } from '../../utils/useFields';
 import { resetFields } from '../../utils/helpers';
 import { addComments } from '../../actions/comments'
@@ -14,19 +14,19 @@ const NewComment = ({parentId, addcomments}) => {
         e.preventDefault();
         addcomments({
             author: author.value,
-            body: body.value,            
-        }, parentId);       
+            body: body.value,
+        }, parentId);
         resetFields(author, body);
     }
-   
+
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <input 
-                    {...author} 
+                <input
+                    {...author}
                     placeholder='Author'
                 />
-                <textarea 
+                <textarea
                     {...body}
                     placeholder="What I'm thinking right now..."
                     className='textarea'

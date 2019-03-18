@@ -13,7 +13,7 @@ function Dashboard(props) {
   const { postIds, order,  match, getAll, sortList, listByCategory } = props;
 
   console.log(props)
-  
+
 
   useEffect(()=>{
     if(Object.keys(match.params).length !== 0) {
@@ -27,10 +27,10 @@ function Dashboard(props) {
     const sort = (column === c) ? !order : true ;
     setColumn(c);
     sortList(c, sort);
-  }    
+  }
 
   return(
-    <div>        
+    <div>
       <button onClick={() => toggleOrder('title')}>Order by Title</button>
       <button onClick={() => toggleOrder('timestamp')}>Order by Date</button>
       <button onClick={() => toggleOrder('voteScore')}>Order by Vote Score</button>
